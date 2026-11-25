@@ -47,8 +47,10 @@ function farbsegmente() {
   });
 }
 
-function text(klasse, x, y, anker, inhalt) {
-  return svgEl('text', { class: klasse, x, y, 'text-anchor': anker }, inhalt);
+function text(klasse, x, y, anker, ...zeilen) {
+  return svgEl('text', { class: klasse, x, y, 'text-anchor': anker },
+    ...zeilen.map((zeile, i) => svgEl('tspan', { x, dy: i === 0 ? 0 : 12 }, zeile)),
+  );
 }
 
 function schlageAus(nadel, winkel) {
@@ -79,7 +81,7 @@ export function tacho(zweifel) {
   },
     bogen(0, GRAU_GRAD, 'grau'),
     ...farbsegmente(),
-    text('zone', 6, 22, 'start', beschriftung.grauZone),
+    text('zone', 4, 26, 'start', ...beschriftung.grauZone.split(' ')),
     text('skala', MITTE.x - RADIUS, 138, 'middle', beschriftung.links),
     text('skala', MITTE.x + RADIUS, 138, 'middle', beschriftung.rechts),
     nadel,
