@@ -1,13 +1,13 @@
 import * as ansichten from './ansichten.js';
 import { wertAus } from './auswertung.js';
-import { pruefpunkte } from './inhalt.js';
+import { pruefpunkte, titel as titeltext } from './inhalt.js';
 
-export function starteAblauf({ ansicht, fuss }) {
+export function starteAblauf({ titel, ansicht, fuss }) {
   const antworten = new Array(pruefpunkte.length).fill(null);
 
   function zeige(inhalt) {
     ansicht.replaceChildren(inhalt);
-    ansicht.querySelector('[tabindex="-1"]').focus();
+    (ansicht.querySelector('[tabindex="-1"]') ?? titel).focus();
   }
 
   function zeigeStart() {
@@ -35,6 +35,7 @@ export function starteAblauf({ ansicht, fuss }) {
     }));
   }
 
+  titel.textContent = titeltext;
   fuss.replaceChildren(...ansichten.fussansicht());
   zeigeStart();
 }

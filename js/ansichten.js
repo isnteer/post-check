@@ -4,7 +4,6 @@ import { tacho } from './tacho.js';
 
 export function startansicht({ starten }) {
   return el('section', {},
-    el('h1', { tabindex: '-1' }, inhalt.titel),
     el('p', {}, inhalt.startseite),
     el('button', { type: 'button', onclick: starten }, 'Check starten'),
   );

@@ -1,45 +1,242 @@
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/AtkinsonHyperlegibleNext-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/AtkinsonHyperlegibleNext-Bold.woff2") format("woff2");
+}
+
 :root {
   color-scheme: light dark;
-  font-family: system-ui, sans-serif;
+  --grund: #fbfaf7;
+  --flaeche: #ffffff;
+  --text: #1b1b1b;
+  --text-leise: #4a4a4a;
+  --linie: #6b6b6b;
+  --akzent: #1c4a9a;
+  --auf-akzent: #ffffff;
+  --akzent-hell: #e4ecf9;
+  --fokus: #0b57d0;
+  --warnung: #8f1d14;
+  --warnung-hell: #fbe9e7;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --grund: #14161a;
+    --flaeche: #1d2026;
+    --text: #ededed;
+    --text-leise: #bdbdbd;
+    --linie: #8c8c8c;
+    --akzent: #9bbcf5;
+    --auf-akzent: #0d1a30;
+    --akzent-hell: #1f2a3f;
+    --fokus: #ffd54a;
+    --warnung: #ff9d92;
+    --warnung-hell: #3a1d1a;
+  }
+}
+
+html {
+  font-family: "Atkinson Hyperlegible Next", system-ui, sans-serif;
   line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
   margin: 0 auto;
   padding: 1rem;
   max-width: 40rem;
+  background: var(--grund);
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  margin: 1rem 0 0.75rem;
+}
+
+h1 {
+  font-size: 1.6rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+h3 {
+  font-size: 1.15rem;
+}
+
+:focus-visible {
+  outline: 3px solid var(--fokus);
+  outline-offset: 3px;
+}
+
+h1:focus-visible,
+h2:focus-visible {
+  outline-offset: 4px;
+  border-radius: 0.25rem;
+}
+
+a {
+  color: var(--akzent);
+  text-underline-offset: 0.2em;
 }
 
 fieldset {
   border: 0;
-  margin: 0;
+  margin: 1rem 0;
   padding: 0;
+  min-width: 0;
 }
 
 legend {
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 1.15rem;
   padding: 0;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .antwort {
-  display: block;
-  padding: 0.75rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  box-sizing: border-box;
+  min-height: 3.5rem;
+  margin-bottom: 0.625rem;
+  padding: 0.75rem 1rem;
+  background: var(--flaeche);
+  border: 2px solid var(--linie);
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+
+.antwort input {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  accent-color: var(--akzent);
+}
+
+.antwort:has(input:checked) {
+  border-width: 4px;
+  padding: calc(0.75rem - 2px) calc(1rem - 2px);
+  border-color: var(--akzent);
+  background: var(--akzent-hell);
+  font-weight: 700;
+}
+
+.antwort:has(input:focus-visible) {
+  outline: 3px solid var(--fokus);
+  outline-offset: 3px;
+}
+
+.tipp,
+.fehler,
+.zusatz {
+  margin: 0.75rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 0.5rem solid var(--akzent);
+  background: var(--akzent-hell);
+  border-radius: 0.25rem;
+}
+
+.tipp {
+  margin-block: 0;
+}
+
+.fehler {
+  margin-block: 0.5rem;
+  border-left-color: var(--warnung);
+  background: var(--warnung-hell);
+  font-weight: 700;
+}
+
+.zusatz p {
+  margin: 0.5rem 0;
 }
 
 .quelle {
-  font-size: 0.8rem;
+  font-size: 0.875rem;
+  color: var(--text-leise);
 }
 
 button {
-  font: inherit;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 3.25rem;
+  margin: 0.75rem 0;
   padding: 0.75rem 1.25rem;
+  font: inherit;
+  font-weight: 700;
+  color: var(--auf-akzent);
+  background: var(--akzent);
+  border: 2px solid var(--akzent);
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+
+button:nth-of-type(2),
+button + button {
+  color: var(--akzent);
+  background: transparent;
 }
 
 progress {
   display: block;
   width: 100%;
   height: 0.75rem;
+  margin-bottom: 0.75rem;
+  accent-color: var(--akzent);
+}
+
+section ul {
+  padding-left: 1.25rem;
+}
+
+section li {
+  margin-bottom: 0.75rem;
+}
+
+section li p {
+  margin: 0.25rem 0;
+}
+
+#fuss {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 2px solid var(--linie);
+  font-size: 0.875rem;
+  color: var(--text-leise);
+}
+
+#fuss ul {
+  padding-left: 1.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 :root {
@@ -80,8 +277,3 @@ progress {
   font-size: 10px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .tacho .nadel {
-    transition: none;
-  }
-}
