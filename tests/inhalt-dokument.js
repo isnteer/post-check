@@ -30,6 +30,27 @@ function pruefpunkte() {
   });
 }
 
+function tipps() {
+  const ergebnis = [];
+  let aktuell = null;
+  let imTipp = false;
+  for (const zeile of abschnitt('Prüfpunkte und Tipps')) {
+    if (/^\d+\. /.test(zeile)) {
+      aktuell = [];
+      ergebnis.push(aktuell);
+      imTipp = false;
+    } else if (/^\s+Tipp: /.test(zeile)) {
+      aktuell.push(zeile.trim().slice('Tipp: '.length));
+      imTipp = true;
+    } else if (/^\s+Zusatz/.test(zeile) || zeile.trim() === '') {
+      imTipp = false;
+    } else if (imTipp) {
+      aktuell.push(zeile.trim());
+    }
+  }
+  return ergebnis.map((zeilen) => zeilen.join(' '));
+}
+
 function fuss() {
   const zeilen = abschnitt('Fuss');
   const arbeit = zeilen.find((zeile) => zeile.startsWith('Vertiefungsarbeit'));
@@ -45,4 +66,4 @@ function ergebnismeldungen() {
     .map((eintrag) => eintrag.replace(/\s*\n\s*/g, ' ').trim());
 }
 
-module.exports = { pruefpunkte, fuss, ergebnismeldungen };
+module.exports = { pruefpunkte, tipps, fuss, ergebnismeldungen };
