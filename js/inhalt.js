@@ -17,22 +17,33 @@ export const teile = {
 };
 
 export const pruefpunkte = [
-  { teil: 'A', frage: 'Wer hat den Post veröffentlicht? Ist es ein bekanntes Medium, eine Behörde oder eine Privatperson?', quelle: 'SRF 2025' },
-  { teil: 'A', frage: 'Kennt sich der Absender im Thema aus? Woher könnte er das wissen?', quelle: 'Trachsel 2026' },
-  { teil: 'A', frage: 'Wie sieht das Profil aus? Ist es schon lange aktiv, oder wurde es erst vor kurzem erstellt?', quelle: 'Trachsel 2026' },
-  { teil: 'A', frage: 'Berichten andere, unabhängige Quellen darüber, oder gibt es schon einen Faktencheck?', quelle: 'SRF 2025; Trachsel 2026' },
-  { teil: 'A', frage: 'Wo und wann soll es passiert sein? Passen Ort und Zeit zusammen?', quelle: 'SRF 2025' },
-  { teil: 'A', frage: 'Klingt es zu gut, um wahr zu sein? Spielt es mit starken Gefühlen oder Superlativen?', quelle: 'Tages-Anzeiger 2026; Trachsel 2026' },
-  { teil: 'A', frage: 'Passt der Inhalt zum Absender?', quelle: 'Trachsel 2026' },
-  { teil: 'B', frage: 'Sehen Hände, Gesichter und Körper natürlich aus?', quelle: 'SRF 2025' },
-  { teil: 'B', frage: 'Ist die Schrift im Bild korrekt und lesbar?', quelle: 'SRF 2025' },
-  { teil: 'B', frage: 'Sehen bekannte Orte und Gebäude so aus wie in Wirklichkeit?', quelle: 'SRF 2025' },
-  { teil: 'B', frage: 'Stimmen Schatten, Licht und Perspektive? Gibt es Fehler im Hintergrund, während ein Blickfang ablenkt?', quelle: 'SRF 2025' },
-  { teil: 'B', frage: 'Findet der SynthID Detector ein KI-Wasserzeichen?', quelle: 'Trachsel 2026' },
+  { teil: 'A', frage: 'Wer hat den Post veröffentlicht? Ist es ein bekanntes Medium, eine Behörde oder eine Privatperson?', quelle: 'SRF 2025', tipp: 'Such die Meldung bei einem bekannten Medium wie SRF oder bei der zuständigen Behörde.' },
+  { teil: 'A', frage: 'Kennt sich der Absender im Thema aus? Woher könnte er das wissen?', quelle: 'Trachsel 2026', tipp: 'Schau, ob der Absender sonst über dieses Thema postet. Wenn nicht: Woher will er es wissen?' },
+  { teil: 'A', frage: 'Wie sieht das Profil aus? Ist es schon lange aktiv, oder wurde es erst vor kurzem erstellt?', quelle: 'Trachsel 2026', tipp: 'Öffne das Profil: Erstellungsdatum, Anzahl Posts, Follower. Ein neues Profil mit wenigen Posts ist ein Warnzeichen.' },
+  { teil: 'A', frage: 'Berichten andere, unabhängige Quellen darüber, oder gibt es schon einen Faktencheck?', quelle: 'SRF 2025; Trachsel 2026', tipp: 'Gib die wichtigsten Wörter der Headline zusammen mit «Faktencheck» in eine Suchmaschine ein.' },
+  { teil: 'A', frage: 'Wo und wann soll es passiert sein? Passen Ort und Zeit zusammen?', quelle: 'SRF 2025', tipp: 'Vergleiche Wetter, Jahreszeit und Schilder im Bild mit dem angeblichen Ort und Datum.' },
+  { teil: 'A', frage: 'Klingt es zu gut, um wahr zu sein? Spielt es mit starken Gefühlen oder Superlativen?', quelle: 'Tages-Anzeiger 2026; Trachsel 2026', tipp: 'Starke Gefühle bremsen das Denken. Warte, bevor du teilst, und such eine nüchterne Quelle.' },
+  { teil: 'A', frage: 'Passt der Inhalt zum Absender?', quelle: 'Trachsel 2026', tipp: 'Vergleiche mit dem offiziellen Konto: Stimmen Name, Schreibweise und Häkchen? Das Konto könnte gefälscht oder gehackt sein.' },
+  { teil: 'B', frage: 'Sehen Hände, Gesichter und Körper natürlich aus?', quelle: 'SRF 2025', tipp: 'Zoom auf Finger, Ohren, Zähne und Haaransatz. Verschmolzene oder zu viele Finger deuten auf KI hin.' },
+  { teil: 'B', frage: 'Ist die Schrift im Bild korrekt und lesbar?', quelle: 'SRF 2025', tipp: 'Zoom auf Schilder und Texte. Verdrehte Buchstaben oder Fantasiewörter deuten auf KI hin.' },
+  { teil: 'B', frage: 'Sehen bekannte Orte und Gebäude so aus wie in Wirklichkeit?', quelle: 'SRF 2025', tipp: 'Vergleiche den Ort mit Fotos aus einer Bildersuche oder mit Google Street View.' },
+  { teil: 'B', frage: 'Stimmen Schatten, Licht und Perspektive? Gibt es Fehler im Hintergrund, während ein Blickfang ablenkt?', quelle: 'SRF 2025', tipp: 'Schau weg vom Blickfang: Prüf die Ränder und ob alle Schatten in dieselbe Richtung fallen.' },
+  { teil: 'B', frage: 'Findet der SynthID Detector ein KI-Wasserzeichen?', quelle: 'Trachsel 2026', tipp: 'Ein gefundenes Wasserzeichen ist ein starkes Indiz für ein KI-Bild. Teil den Post nicht als echte Aufnahme.' },
 ];
 
 export const meldungKeineWarnzeichen =
   'Keine Warnzeichen gefunden – aber auch ein Post ohne Warnzeichen kann ein Fake sein';
+
+export const meldungVorsicht = 'Vorsicht: erst prüfen, dann teilen';
+
+export const ergebnisseite = {
+  warnzeichenTitel: 'Warnzeichen',
+  nichtPruefbarTitel: 'Konntest du nicht prüfen',
+  merksatz:
+    'Diese Seite sagt nie, ein Post sei echt. Ohne Warnzeichen heisst nur: Du hast nichts Auffälliges gefunden.',
+  aendern: 'Antworten ändern',
+  neu: 'Neuen Post prüfen',
+};
 
 export const fuss = {
   arbeit: 'Vertiefungsarbeit von Jérôme Golaz und Nils Steiner, BBZW Sursee, 2026',
