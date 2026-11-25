@@ -1,3 +1,5 @@
+import { ANTWORT } from './werte.js';
+
 export const titel = 'Echt oder Fake? – Der Post-Check';
 
 export const startseite =
@@ -6,9 +8,9 @@ export const startseite =
   'Bei jedem Prüfpunkt wählt man «unauffällig», «auffällig» oder «kann ich nicht prüfen».';
 
 export const antworten = [
-  { wert: 'unauffaellig', beschriftung: 'unauffällig' },
-  { wert: 'auffaellig', beschriftung: 'auffällig' },
-  { wert: 'nicht-pruefbar', beschriftung: 'kann ich nicht prüfen' },
+  { wert: ANTWORT.UNAUFFAELLIG, beschriftung: 'unauffällig' },
+  { wert: ANTWORT.AUFFAELLIG, beschriftung: 'auffällig' },
+  { wert: ANTWORT.NICHT_PRUEFBAR, beschriftung: 'kann ich nicht prüfen' },
 ];
 
 export const teile = {

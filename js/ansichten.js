@@ -1,6 +1,7 @@
 import { el } from './dom.js';
 import * as inhalt from './inhalt.js';
 import { tacho } from './tacho.js';
+import { ANTWORT, ERGEBNIS, KEINE_ANTWORT } from './werte.js';
 
 export function startansicht({ starten }) {
   return el('section', {},
@@ -13,7 +14,7 @@ export function pruefpunktansicht({ index, antwort, waehlen, weiter, zurueck }) 
   const punkt = inhalt.pruefpunkte[index];
   const tippBereich = el('div', { 'aria-live': 'polite', class: 'tipp-bereich' });
   const zeigeTipp = (wert) => {
-    tippBereich.replaceChildren(...(wert === 'auffaellig' ? [el('p', { class: 'tipp' }, punkt.tipp)] : []));
+    tippBereich.replaceChildren(...(wert === ANTWORT.AUFFAELLIG ? [el('p', { class: 'tipp' }, punkt.tipp)] : []));
   };
   zeigeTipp(antwort);
   let gewaehlt = antwort;
@@ -42,7 +43,7 @@ export function pruefpunktansicht({ index, antwort, waehlen, weiter, zurueck }) 
     el('p', { class: 'quelle' }, `Quelle: ${punkt.quelle}`),
     fehlerBereich,
     el('button', { type: 'button', onclick: () => {
-      if (gewaehlt === null) fehlerBereich.replaceChildren(el('p', { role: 'alert', class: 'fehler' }, inhalt.fehlerKeineAntwort));
+      if (gewaehlt === KEINE_ANTWORT) fehlerBereich.replaceChildren(el('p', { role: 'alert', class: 'fehler' }, inhalt.fehlerKeineAntwort));
       else weiter();
     } }, 'Weiter'),
     el('button', { type: 'button', onclick: zurueck }, 'Zurück'),
@@ -58,7 +59,7 @@ function zusatzansicht({ link, hinweis }) {
 
 export function ergebnisansicht({ auswertung, aendern, neu }) {
   const meldung =
-    auswertung.ergebnis === 'vorsicht' ? inhalt.meldungVorsicht : inhalt.meldungKeineWarnzeichen;
+    auswertung.ergebnis === ERGEBNIS.VORSICHT ? inhalt.meldungVorsicht : inhalt.meldungKeineWarnzeichen;
   const warnzeichen = auswertung.warnzeichen.map((index) => {
     const punkt = inhalt.pruefpunkte[index];
     return el('li', {}, el('p', {}, punkt.frage), el('p', {}, punkt.tipp));

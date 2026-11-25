@@ -1,9 +1,10 @@
 import * as ansichten from './ansichten.js';
 import { wertAus } from './auswertung.js';
 import { pruefpunkte, titel as titeltext } from './inhalt.js';
+import { KEINE_ANTWORT } from './werte.js';
 
 export function starteAblauf({ titel, ansicht, fuss }) {
-  const antworten = new Array(pruefpunkte.length).fill(null);
+  const antworten = new Array(pruefpunkte.length).fill(KEINE_ANTWORT);
 
   function zeige(inhalt) {
     ansicht.replaceChildren(inhalt);
@@ -29,7 +30,7 @@ export function starteAblauf({ titel, ansicht, fuss }) {
       auswertung: wertAus(antworten),
       aendern: () => zeigePruefpunkt(0),
       neu: () => {
-        antworten.fill(null);
+        antworten.fill(KEINE_ANTWORT);
         zeigeStart();
       },
     }));
