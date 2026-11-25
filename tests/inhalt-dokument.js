@@ -30,6 +30,29 @@ function pruefpunkte() {
   });
 }
 
+function tipps() {
+  const zeilen = abschnitt('Prüfpunkte und Tipps');
+  const ergebnis = [];
+  let aktuell = null;
+  let imTipp = false;
+  for (const zeile of zeilen) {
+    const kopf = zeile.match(/^(\d+)\. /);
+    if (kopf) {
+      aktuell = { nummer: Number(kopf[1]), zeilen: [] };
+      ergebnis.push(aktuell);
+      imTipp = false;
+    } else if (aktuell && /^\s+Tipp: /.test(zeile)) {
+      imTipp = true;
+      aktuell.zeilen.push(zeile.trim().slice('Tipp: '.length));
+    } else if (aktuell && imTipp && (/^\s+Zusatz/.test(zeile) || zeile.startsWith('#'))) {
+      imTipp = false;
+    } else if (aktuell && imTipp && zeile.trim() !== '') {
+      aktuell.zeilen.push(zeile.trim());
+    }
+  }
+  return ergebnis.map(({ nummer, zeilen: teile }) => ({ nummer, tipp: teile.join(' ') }));
+}
+
 function fuss() {
   const zeilen = abschnitt('Fuss');
   const arbeit = zeilen.find((zeile) => zeile.startsWith('Vertiefungsarbeit'));
@@ -45,4 +68,4 @@ function ergebnismeldungen() {
     .map((eintrag) => eintrag.replace(/\s*\n\s*/g, ' ').trim());
 }
 
-module.exports = { pruefpunkte, fuss, ergebnismeldungen };
+module.exports = { pruefpunkte, tipps, fuss, ergebnismeldungen };

@@ -11,10 +11,18 @@ export function startansicht({ starten }) {
 
 export function pruefpunktansicht({ index, antwort, waehlen, weiter }) {
   const punkt = inhalt.pruefpunkte[index];
+  const tippBereich = el('div', { 'aria-live': 'polite', class: 'tipp-bereich' });
+  const zeigeTipp = (wert) => {
+    tippBereich.replaceChildren(...(wert === 'auffaellig' ? [el('p', { class: 'tipp' }, punkt.tipp)] : []));
+  };
+  zeigeTipp(antwort);
   const radios = inhalt.antworten.map(({ wert, beschriftung }) => {
     const eingabe = el('input', { type: 'radio', name: 'antwort', value: wert });
     eingabe.checked = antwort === wert;
-    eingabe.addEventListener('change', () => waehlen(wert));
+    eingabe.addEventListener('change', () => {
+      waehlen(wert);
+      zeigeTipp(wert);
+    });
     return el('label', { class: 'antwort' }, eingabe, beschriftung);
   });
   return el('section', {},
@@ -24,6 +32,7 @@ export function pruefpunktansicht({ index, antwort, waehlen, weiter }) {
       el('legend', {}, punkt.frage),
       ...radios,
     ),
+    tippBereich,
     el('p', { class: 'quelle' }, `Quelle: ${punkt.quelle}`),
     el('button', { type: 'button', onclick: weiter }, 'Weiter'),
   );
