@@ -1,12 +1,13 @@
-import { svgEl } from './dom.js';
+import { el } from './dom.js';
+import { SCHWELLE_VORSICHT } from './auswertung.js';
 import { tacho as beschriftung } from './inhalt.js';
 
-const SCHWELLE_VORSICHT = 1;
-const VOLL_AB_ZWEIFEL = 6;
-const BOGEN_GRAD = 180;
-const GRAU_GRAD = BOGEN_GRAD / 3;
-const GRAU_NADEL_MAX_GRAD = 54;
-const FARBIG_NADEL_START_GRAD = 66;
+export const VOLL_AB_ZWEIFEL = 6;
+export const BOGEN_GRAD = 180;
+export const GRAU_GRAD = BOGEN_GRAD / 3;
+const NADEL_ABSTAND_ZUR_GRENZE_GRAD = 6;
+const GRAU_NADEL_MAX_GRAD = GRAU_GRAD - NADEL_ABSTAND_ZUR_GRENZE_GRAD;
+const FARBIG_NADEL_START_GRAD = GRAU_GRAD + NADEL_ABSTAND_ZUR_GRENZE_GRAD;
 const MITTE = { x: 120, y: 115 };
 const RADIUS = 85;
 const BREITE = 18;
@@ -18,7 +19,7 @@ export function nadelwinkel(zweifel) {
   return FARBIG_NADEL_START_GRAD + anteil * (BOGEN_GRAD - FARBIG_NADEL_START_GRAD);
 }
 
-function punkt(grad, radius) {
+function koordinate(grad, radius) {
   const bogenmass = (grad * Math.PI) / 180;
   return {
     x: MITTE.x - radius * Math.cos(bogenmass),
@@ -27,9 +28,9 @@ function punkt(grad, radius) {
 }
 
 function bogen(vonGrad, bisGrad, klasse) {
-  const start = punkt(vonGrad, RADIUS);
-  const ende = punkt(bisGrad, RADIUS);
-  return svgEl('path', {
+  const start = koordinate(vonGrad, RADIUS);
+  const ende = koordinate(bisGrad, RADIUS);
+  return el('path', {
     class: klasse,
     d: `M ${start.x} ${start.y} A ${RADIUS} ${RADIUS} 0 0 1 ${ende.x} ${ende.y}`,
     fill: 'none',
@@ -48,8 +49,8 @@ function farbsegmente() {
 }
 
 function text(klasse, x, y, anker, ...zeilen) {
-  return svgEl('text', { class: klasse, x, y, 'text-anchor': anker },
-    ...zeilen.map((zeile, i) => svgEl('tspan', { x, dy: i === 0 ? 0 : 12 }, i < zeilen.length - 1 ? `${zeile} ` : zeile)),
+  return el('text', { class: klasse, x, y, 'text-anchor': anker },
+    ...zeilen.map((zeile, i) => el('tspan', { x, dy: i === 0 ? 0 : 12 }, i < zeilen.length - 1 ? `${zeile} ` : zeile)),
   );
 }
 
@@ -61,9 +62,9 @@ function schlageAus(nadel, winkel) {
 }
 
 export function tacho(zweifel) {
-  const nadelspitze = punkt(0, RADIUS - BREITE / 2 - 4);
-  const nadel = svgEl('g', { class: 'nadel' },
-    svgEl('line', {
+  const nadelspitze = koordinate(0, RADIUS - BREITE / 2 - 4);
+  const nadel = el('g', { class: 'nadel' },
+    el('line', {
       x1: MITTE.x,
       y1: MITTE.y,
       x2: nadelspitze.x,
@@ -71,9 +72,9 @@ export function tacho(zweifel) {
       'stroke-width': 4,
       'stroke-linecap': 'round',
     }),
-    svgEl('circle', { cx: MITTE.x, cy: MITTE.y, r: 7 }),
+    el('circle', { cx: MITTE.x, cy: MITTE.y, r: 7 }),
   );
-  const zeichnung = svgEl('svg', {
+  const zeichnung = el('svg', {
     class: 'tacho',
     viewBox: '0 0 240 150',
     'aria-hidden': 'true',

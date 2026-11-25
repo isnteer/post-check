@@ -72,6 +72,11 @@ Die Quelle steht klein beim Prüfpunkt. Der Tipp erscheint bei «auffällig».
 
 - Fehlermeldung ohne Antwort: Wähle eine Antwort, bevor du weitergehst.
 - Knöpfe: Check starten, Weiter, Zurück
+- Beschriftung des Fortschrittsbalkens: Fortschritt
+- Überschrift des Prüfpunkts: Prüfpunkt n von 12
+- Zeile für Teil A: Teil A: Absender und Kontext
+- Zeile für Teil B: Teil B: Bild
+- Quellenzeile: «Quelle: » und die Quelle des Prüfpunkts
 
 ## Ergebnis
 
@@ -84,6 +89,9 @@ Die Quelle steht klein beim Prüfpunkt. Der Tipp erscheint bei «auffällig».
 Überschrift der ersten Liste: Warnzeichen
 
 Überschrift der zweiten Liste: Konntest du nicht prüfen
+
+Jedes Warnzeichen beginnt mit der Nummer seines Prüfpunkts, zum Beispiel
+«3. Wie sieht das Profil aus? …».
 
 Merksatz: Diese Seite sagt nie, ein Post sei echt. Ohne Warnzeichen heisst nur:
 Du hast nichts Auffälliges gefunden.

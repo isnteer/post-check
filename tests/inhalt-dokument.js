@@ -89,4 +89,20 @@ function tacho() {
   };
 }
 
-module.exports = { pruefpunkte, tipps, zusatz, fuss, ergebnismeldungen, tacho };
+function bedienung() {
+  const zeilen = abschnitt('Bedienung');
+  const wert = (name) => zeilen.find((zeile) => zeile.startsWith(`- ${name}: `)).slice(name.length + 4);
+  const [starten, weiter, zurueck] = wert('Knöpfe').split(', ');
+  return {
+    starten,
+    weiter,
+    zurueck,
+    fortschritt: wert('Beschriftung des Fortschrittsbalkens'),
+    pruefpunkt: (nummer) => wert('Überschrift des Prüfpunkts').replace('n von 12', `${nummer} von 12`),
+    teil: { A: wert('Zeile für Teil A'), B: wert('Zeile für Teil B') },
+    quelle: (quelle) => `${wert('Quellenzeile').match(/«(.*)»/)[1]}${quelle}`,
+    fehler: wert('Fehlermeldung ohne Antwort'),
+  };
+}
+
+module.exports = { bedienung, pruefpunkte, tipps, zusatz, fuss, ergebnismeldungen, tacho };

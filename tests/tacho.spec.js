@@ -1,24 +1,11 @@
 const { test, expect } = require('@playwright/test');
 const dokument = require('./inhalt-dokument');
 
-const UNAUFFAELLIG = 'unauffällig';
-const AUFFAELLIG = 'auffällig';
-const NICHT_PRUEFBAR = 'kann ich nicht prüfen';
+const { UNAUFFAELLIG, AUFFAELLIG, NICHT_PRUEFBAR, pruefeDurch } = require('./helfer');
 
-const GRAU_BIS_GRAD = 60;
-const VOLL_GRAD = 180;
 
 function antwortenMit(anzahl, antwort, grundantwort = UNAUFFAELLIG) {
   return [...new Array(anzahl).fill(antwort), ...new Array(12 - anzahl).fill(grundantwort)];
-}
-
-async function pruefeDurch(page, antworten) {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Check starten' }).click();
-  for (const antwort of antworten) {
-    await page.getByRole('radio', { name: antwort, exact: true }).check();
-    await page.getByRole('button', { name: 'Weiter' }).click();
-  }
 }
 
 async function nadelwinkel(page) {
@@ -37,6 +24,15 @@ const faelle = [
   { name: 'Zweifel 6', antworten: antwortenMit(6, AUFFAELLIG), zone: 'voll' },
   { name: 'Zweifel 12', antworten: antwortenMit(12, AUFFAELLIG), zone: 'voll' },
 ];
+
+let GRAU_BIS_GRAD;
+let VOLL_GRAD;
+
+test.beforeAll(async () => {
+  const tacho = await import('../js/tacho.js');
+  GRAU_BIS_GRAD = tacho.GRAU_GRAD;
+  VOLL_GRAD = tacho.BOGEN_GRAD;
+});
 
 test('der Tacho ist sichtbar, beschriftet und für Screenreader ausgeblendet', async ({ page }) => {
   const beschriftung = dokument.tacho();

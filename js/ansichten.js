@@ -1,11 +1,12 @@
 import { el } from './dom.js';
 import * as inhalt from './inhalt.js';
 import { tacho } from './tacho.js';
+import { ANTWORT, ERGEBNIS, KEINE_ANTWORT } from './werte.js';
 
 export function startansicht({ starten }) {
   return el('section', {},
     el('p', {}, inhalt.startseite),
-    el('button', { type: 'button', onclick: starten }, 'Check starten'),
+    el('button', { type: 'button', onclick: starten }, inhalt.bedienung.starten),
   );
 }
 
@@ -13,7 +14,7 @@ export function pruefpunktansicht({ index, antwort, waehlen, weiter, zurueck }) 
   const punkt = inhalt.pruefpunkte[index];
   const tippBereich = el('div', { 'aria-live': 'polite', class: 'tipp-bereich' });
   const zeigeTipp = (wert) => {
-    tippBereich.replaceChildren(...(wert === 'auffaellig' ? [el('p', { class: 'tipp' }, punkt.tipp)] : []));
+    tippBereich.replaceChildren(...(wert === ANTWORT.AUFFAELLIG ? [el('p', { class: 'tipp' }, punkt.tipp)] : []));
   };
   zeigeTipp(antwort);
   let gewaehlt = antwort;
@@ -30,22 +31,22 @@ export function pruefpunktansicht({ index, antwort, waehlen, weiter, zurueck }) 
     return el('label', { class: 'antwort' }, eingabe, beschriftung);
   });
   return el('section', {},
-    el('h2', { tabindex: '-1' }, `Prüfpunkt ${index + 1} von ${inhalt.pruefpunkte.length}`),
-    el('progress', { max: String(inhalt.pruefpunkte.length), value: String(index + 1), 'aria-label': 'Fortschritt' }),
-    el('p', {}, `Teil ${punkt.teil}: ${inhalt.teile[punkt.teil]}`),
+    el('h2', { tabindex: '-1' }, inhalt.fuelle(inhalt.bedienung.pruefpunkt, { nummer: index + 1, anzahl: inhalt.pruefpunkte.length })),
+    el('progress', { max: String(inhalt.pruefpunkte.length), value: String(index + 1), 'aria-label': inhalt.bedienung.fortschritt }),
+    el('p', {}, inhalt.fuelle(inhalt.bedienung.teil, { teil: punkt.teil, name: inhalt.teile[punkt.teil] })),
     el('fieldset', {},
       el('legend', {}, punkt.frage),
       ...radios,
     ),
     tippBereich,
     ...(punkt.zusatz ? [zusatzansicht(punkt.zusatz)] : []),
-    el('p', { class: 'quelle' }, `Quelle: ${punkt.quelle}`),
+    el('p', { class: 'quelle' }, inhalt.fuelle(inhalt.bedienung.quelle, { quelle: punkt.quelle })),
     fehlerBereich,
     el('button', { type: 'button', onclick: () => {
-      if (gewaehlt === null) fehlerBereich.replaceChildren(el('p', { role: 'alert', class: 'fehler' }, inhalt.fehlerKeineAntwort));
+      if (gewaehlt === KEINE_ANTWORT) fehlerBereich.replaceChildren(el('p', { role: 'alert', class: 'fehler' }, inhalt.fehlerKeineAntwort));
       else weiter();
-    } }, 'Weiter'),
-    el('button', { type: 'button', onclick: zurueck }, 'Zurück'),
+    } }, inhalt.bedienung.weiter),
+    el('button', { type: 'button', onclick: zurueck }, inhalt.bedienung.zurueck),
   );
 }
 
@@ -58,10 +59,10 @@ function zusatzansicht({ link, hinweis }) {
 
 export function ergebnisansicht({ auswertung, aendern, neu }) {
   const meldung =
-    auswertung.ergebnis === 'vorsicht' ? inhalt.meldungVorsicht : inhalt.meldungKeineWarnzeichen;
+    auswertung.ergebnis === ERGEBNIS.VORSICHT ? inhalt.meldungVorsicht : inhalt.meldungKeineWarnzeichen;
   const warnzeichen = auswertung.warnzeichen.map((index) => {
     const punkt = inhalt.pruefpunkte[index];
-    return el('li', {}, el('p', {}, punkt.frage), el('p', {}, punkt.tipp));
+    return el('li', {}, el('p', {}, `${index + 1}. ${punkt.frage}`), el('p', {}, punkt.tipp));
   });
   const nichtPruefbar = auswertung.nichtPruefbar.map((index) =>
     el('li', {}, inhalt.pruefpunkte[index].frage),

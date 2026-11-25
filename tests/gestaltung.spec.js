@@ -1,28 +1,15 @@
 const { test, expect } = require('@playwright/test');
 const AxeBuilder = require('@axe-core/playwright').default;
+const { UNAUFFAELLIG, AUFFAELLIG, NICHT_PRUEFBAR, pruefeDurch, zumPruefpunkt } = require('./helfer');
 
+const dokument = require('./inhalt-dokument');
+
+const bedienung = dokument.bedienung();
 const SCHRIFT = 'Atkinson Hyperlegible Next';
 
-async function zumPruefpunkt(page, nummer) {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Check starten' }).click();
-  for (let i = 1; i < nummer; i++) {
-    await page.getByRole('radio', { name: 'unauffällig', exact: true }).check();
-    await page.getByRole('button', { name: 'Weiter' }).click();
-  }
-}
-
-async function zumErgebnis(page, antworten) {
-  await zumPruefpunkt(page, 1);
-  for (const antwort of antworten) {
-    await page.getByRole('radio', { name: antwort, exact: true }).check();
-    await page.getByRole('button', { name: 'Weiter' }).click();
-  }
-}
-
 const vorsichtMitBeidenListen = [
-  'auffällig', 'unauffällig', 'kann ich nicht prüfen', 'unauffällig', 'auffällig', 'unauffällig',
-  'unauffällig', 'unauffällig', 'unauffällig', 'unauffällig', 'unauffällig', 'kann ich nicht prüfen',
+  AUFFAELLIG, UNAUFFAELLIG, NICHT_PRUEFBAR, UNAUFFAELLIG, AUFFAELLIG, UNAUFFAELLIG,
+  UNAUFFAELLIG, UNAUFFAELLIG, UNAUFFAELLIG, UNAUFFAELLIG, UNAUFFAELLIG, NICHT_PRUEFBAR,
 ];
 
 async function seitlichesScrollen(page) {
@@ -32,7 +19,7 @@ async function seitlichesScrollen(page) {
 const ansichten = {
   Start: (page) => page.goto('/'),
   Prüfpunkt: (page) => zumPruefpunkt(page, 12),
-  Ergebnis: (page) => zumErgebnis(page, vorsichtMitBeidenListen),
+  Ergebnis: (page) => pruefeDurch(page, vorsichtMitBeidenListen),
 };
 
 for (const [name, oeffne] of Object.entries(ansichten)) {
@@ -61,7 +48,7 @@ for (const [name, oeffne] of Object.entries(ansichten)) {
 test('der ganze Check lässt sich nur mit der Tastatur bis zum Ergebnis durchspielen', async ({ page }) => {
   await page.goto('/');
   await page.keyboard.press('Tab');
-  await expect(page.getByRole('button', { name: 'Check starten' })).toBeFocused();
+  await expect(page.getByRole('button', { name: bedienung.starten })).toBeFocused();
   await page.keyboard.press('Enter');
   for (let nummer = 1; nummer <= 12; nummer++) {
     await expect(page.getByRole('heading', { level: 2 })).toHaveText(`Prüfpunkt ${nummer} von 12`);
@@ -69,14 +56,14 @@ test('der ganze Check lässt sich nur mit der Tastatur bis zum Ergebnis durchspi
     await expect(page.getByRole('radio').first()).toBeFocused();
     await page.keyboard.press('ArrowDown');
     await page.keyboard.press('ArrowDown');
-    await expect(page.getByRole('radio', { name: 'kann ich nicht prüfen', exact: true })).toBeChecked();
+    await expect(page.getByRole('radio', { name: NICHT_PRUEFBAR, exact: true })).toBeChecked();
     await page.keyboard.press('ArrowUp');
-    await expect(page.getByRole('radio', { name: 'auffällig', exact: true })).toBeChecked();
+    await expect(page.getByRole('radio', { name: AUFFAELLIG, exact: true })).toBeChecked();
     await page.keyboard.press('ArrowUp');
-    await expect(page.getByRole('radio', { name: 'unauffällig', exact: true })).toBeChecked();
+    await expect(page.getByRole('radio', { name: UNAUFFAELLIG, exact: true })).toBeChecked();
     if (nummer === 12) await page.keyboard.press('Tab');
     await page.keyboard.press('Tab');
-    await expect(page.getByRole('button', { name: 'Weiter' })).toBeFocused();
+    await expect(page.getByRole('button', { name: bedienung.weiter })).toBeFocused();
     await page.keyboard.press('Enter');
   }
   await expect(page.getByRole('heading', { level: 2 })).toContainText('Keine Warnzeichen gefunden');
@@ -178,7 +165,7 @@ for (const modus of ['light', 'dark']) {
       await page.emulateMedia({ colorScheme: modus, reducedMotion: 'reduce' });
       await oeffne(page);
       if (name === 'Prüfpunkt') {
-        await page.getByRole('radio', { name: 'auffällig', exact: true }).check();
+        await page.getByRole('radio', { name: AUFFAELLIG, exact: true }).check();
         await expect(page.locator('.tipp')).toBeVisible();
       }
       if (name === 'Ergebnis') {
@@ -193,7 +180,7 @@ for (const modus of ['light', 'dark']) {
 
 test('bei reduzierter Bewegung läuft nirgends eine Animation oder ein Übergang', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await zumErgebnis(page, vorsichtMitBeidenListen);
+  await pruefeDurch(page, vorsichtMitBeidenListen);
   const bewegt = await page.evaluate(() =>
     [...document.querySelectorAll('*')].filter((knoten) => {
       const stil = getComputedStyle(knoten);

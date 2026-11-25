@@ -1,20 +1,11 @@
 const { test, expect } = require('@playwright/test');
 const dokument = require('./inhalt-dokument');
-
-
-async function startePruefung(page) {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Check starten' }).click();
-}
-
-async function beantworte(page, antwort) {
-  await page.getByRole('radio', { name: antwort, exact: true }).check();
-  await page.getByRole('button', { name: 'Weiter' }).click();
-}
+const bedienung = dokument.bedienung();
+const { UNAUFFAELLIG, AUFFAELLIG, NICHT_PRUEFBAR, startePruefung, beantworte } = require('./helfer');
 
 test('12× «unauffällig» endet bei der Meldung ohne Warnzeichen', async ({ page }) => {
   await startePruefung(page);
-  for (let i = 0; i < 12; i++) await beantworte(page, 'unauffällig');
+  for (let i = 0; i < 12; i++) await beantworte(page, UNAUFFAELLIG);
   await expect(page.getByRole('heading', { level: 2 })).toHaveText(
     'Keine Warnzeichen gefunden – aber auch ein Post ohne Warnzeichen kann ein Fake sein',
   );
@@ -26,19 +17,18 @@ test('12× «unauffällig» endet bei der Meldung ohne Warnzeichen', async ({ pa
 
 test('jeder Prüfpunkt erscheint einzeln mit Teil, Wortlaut, Quelle und drei Antworten', async ({ page }) => {
   await startePruefung(page);
-  const teile = { A: 'Teil A: Absender und Kontext', B: 'Teil B: Bild' };
   for (const punkt of dokument.pruefpunkte()) {
-    await expect(page.getByRole('heading', { level: 2 })).toHaveText(`Prüfpunkt ${punkt.nummer} von 12`);
-    await expect(page.getByText(teile[punkt.teil], { exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2 })).toHaveText(bedienung.pruefpunkt(punkt.nummer));
+    await expect(page.getByText(bedienung.teil[punkt.teil], { exact: true })).toBeVisible();
     const gruppe = page.getByRole('group', { name: punkt.frage, exact: true });
     await expect(gruppe).toBeVisible();
-    await expect(page.getByText(`Quelle: ${punkt.quelle}`, { exact: true })).toBeVisible();
+    await expect(page.getByText(bedienung.quelle(punkt.quelle), { exact: true })).toBeVisible();
     await expect(gruppe.getByRole('radio')).toHaveCount(3);
-    await expect(gruppe.getByRole('radio', { name: 'unauffällig', exact: true })).toBeVisible();
-    await expect(gruppe.getByRole('radio', { name: 'auffällig', exact: true })).toBeVisible();
-    await expect(gruppe.getByRole('radio', { name: 'kann ich nicht prüfen', exact: true })).toBeVisible();
+    await expect(gruppe.getByRole('radio', { name: UNAUFFAELLIG, exact: true })).toBeVisible();
+    await expect(gruppe.getByRole('radio', { name: AUFFAELLIG, exact: true })).toBeVisible();
+    await expect(gruppe.getByRole('radio', { name: NICHT_PRUEFBAR, exact: true })).toBeVisible();
     await expect(page.getByRole('group')).toHaveCount(1);
-    await beantworte(page, 'unauffällig');
+    await beantworte(page, UNAUFFAELLIG);
   }
 });
 
@@ -57,17 +47,17 @@ test('der Fuss nennt die Arbeit und die drei Quellen wie im Inhaltsdokument', as
 
 test('Neuladen beginnt wieder bei der Startseite', async ({ page }) => {
   await startePruefung(page);
-  await page.getByRole('radio', { name: 'auffällig', exact: true }).check();
+  await page.getByRole('radio', { name: AUFFAELLIG, exact: true }).check();
   await page.reload();
-  await expect(page.getByRole('button', { name: 'Check starten' })).toBeVisible();
-  await page.getByRole('button', { name: 'Check starten' }).click();
+  await expect(page.getByRole('button', { name: bedienung.starten })).toBeVisible();
+  await page.getByRole('button', { name: bedienung.starten }).click();
   await expect(page.getByRole('radio', { checked: true })).toHaveCount(0);
 });
 
 test('Fokus liegt nach jedem Ansichtswechsel auf der Überschrift', async ({ page }) => {
   await startePruefung(page);
   await expect(page.getByRole('heading', { level: 2 })).toBeFocused();
-  await beantworte(page, 'unauffällig');
+  await beantworte(page, UNAUFFAELLIG);
   await expect(page.getByRole('heading', { level: 2 })).toBeFocused();
 });
 
@@ -79,7 +69,7 @@ test('ohne fremde Anfragen, Cookies und Browser-Speicher', async ({ page, contex
     if (url.protocol.startsWith('http') && url.origin !== ursprung) fremd.push(anfrage.url());
   });
   await startePruefung(page);
-  for (let i = 0; i < 12; i++) await beantworte(page, 'auffällig');
+  for (let i = 0; i < 12; i++) await beantworte(page, AUFFAELLIG);
   await expect(page.getByRole('heading', { level: 2 })).toBeVisible();
   expect(fremd).toEqual([]);
   expect(await context.cookies()).toEqual([]);
