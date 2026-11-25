@@ -4,7 +4,7 @@ import { tacho } from './tacho.js';
 import { ANTWORT, ERGEBNIS, KEINE_ANTWORT } from './werte.js';
 
 export function startansicht({ starten }) {
-  return el('section', {},
+  return el('section', { class: 'start' },
     el('p', {}, inhalt.startseite),
     el('button', { type: 'button', onclick: starten }, inhalt.bedienung.starten),
   );
@@ -30,10 +30,10 @@ export function pruefpunktansicht({ index, antwort, waehlen, weiter, zurueck }) 
     });
     return el('label', { class: 'antwort' }, eingabe, beschriftung);
   });
-  return el('section', {},
+  return el('section', { class: 'pruefpunkt' },
     el('h2', { tabindex: '-1' }, inhalt.fuelle(inhalt.bedienung.pruefpunkt, { nummer: index + 1, anzahl: inhalt.pruefpunkte.length })),
     el('progress', { max: String(inhalt.pruefpunkte.length), value: String(index + 1), 'aria-label': inhalt.bedienung.fortschritt }),
-    el('p', {}, inhalt.fuelle(inhalt.bedienung.teil, { teil: punkt.teil, name: inhalt.teile[punkt.teil] })),
+    el('p', { class: 'teil' }, inhalt.fuelle(inhalt.bedienung.teil, { teil: punkt.teil, name: inhalt.teile[punkt.teil] })),
     el('fieldset', {},
       el('legend', {}, punkt.frage),
       ...radios,
@@ -46,7 +46,7 @@ export function pruefpunktansicht({ index, antwort, waehlen, weiter, zurueck }) 
       if (gewaehlt === KEINE_ANTWORT) fehlerBereich.replaceChildren(el('p', { role: 'alert', class: 'fehler' }, inhalt.fehlerKeineAntwort));
       else weiter();
     } }, inhalt.bedienung.weiter),
-    el('button', { type: 'button', onclick: zurueck }, inhalt.bedienung.zurueck),
+    el('button', { type: 'button', class: 'zweitrangig', onclick: zurueck }, inhalt.bedienung.zurueck),
   );
 }
 
@@ -62,28 +62,28 @@ export function ergebnisansicht({ auswertung, aendern, neu }) {
     auswertung.ergebnis === ERGEBNIS.VORSICHT ? inhalt.meldungVorsicht : inhalt.meldungKeineWarnzeichen;
   const warnzeichen = auswertung.warnzeichen.map((index) => {
     const punkt = inhalt.pruefpunkte[index];
-    return el('li', {}, el('p', {}, `${index + 1}. ${punkt.frage}`), el('p', {}, punkt.tipp));
+    return el('li', {}, el('p', { class: 'frage' }, `${index + 1}. ${punkt.frage}`), el('p', {}, punkt.tipp));
   });
   const nichtPruefbar = auswertung.nichtPruefbar.map((index) =>
     el('li', {}, inhalt.pruefpunkte[index].frage),
   );
-  return el('section', {},
+  return el('section', { class: `ergebnis ergebnis-${auswertung.ergebnis}` },
     el('h2', { tabindex: '-1' }, meldung),
     tacho(auswertung.zweifel),
     ...liste('warnzeichen-titel', inhalt.ergebnisseite.warnzeichenTitel, warnzeichen),
     ...liste('nicht-pruefbar-titel', inhalt.ergebnisseite.nichtPruefbarTitel, nichtPruefbar),
-    el('p', {}, inhalt.ergebnisseite.merksatz),
+    el('p', { class: 'merksatz' }, inhalt.ergebnisseite.merksatz),
     el('button', { type: 'button', onclick: aendern }, inhalt.ergebnisseite.aendern),
-    el('button', { type: 'button', onclick: neu }, inhalt.ergebnisseite.neu),
+    el('button', { type: 'button', class: 'zweitrangig', onclick: neu }, inhalt.ergebnisseite.neu),
   );
 }
 
 function liste(kennung, titel, eintraege) {
   if (eintraege.length === 0) return [];
   return [
-    el('section', { 'aria-labelledby': kennung },
+    el('section', { 'aria-labelledby': kennung, class: kennung },
       el('h3', { id: kennung }, titel),
-      el('ul', {}, ...eintraege),
+      el('ul', { role: 'list' }, ...eintraege),
     ),
   ];
 }
