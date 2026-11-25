@@ -6,7 +6,7 @@ import { ANTWORT, ERGEBNIS, KEINE_ANTWORT } from './werte.js';
 export function startansicht({ starten }) {
   return el('section', {},
     el('p', {}, inhalt.startseite),
-    el('button', { type: 'button', onclick: starten }, 'Check starten'),
+    el('button', { type: 'button', onclick: starten }, inhalt.bedienung.starten),
   );
 }
 
@@ -31,22 +31,22 @@ export function pruefpunktansicht({ index, antwort, waehlen, weiter, zurueck }) 
     return el('label', { class: 'antwort' }, eingabe, beschriftung);
   });
   return el('section', {},
-    el('h2', { tabindex: '-1' }, `Prüfpunkt ${index + 1} von ${inhalt.pruefpunkte.length}`),
-    el('progress', { max: String(inhalt.pruefpunkte.length), value: String(index + 1), 'aria-label': 'Fortschritt' }),
-    el('p', {}, `Teil ${punkt.teil}: ${inhalt.teile[punkt.teil]}`),
+    el('h2', { tabindex: '-1' }, inhalt.fuelle(inhalt.bedienung.pruefpunkt, { nummer: index + 1, anzahl: inhalt.pruefpunkte.length })),
+    el('progress', { max: String(inhalt.pruefpunkte.length), value: String(index + 1), 'aria-label': inhalt.bedienung.fortschritt }),
+    el('p', {}, inhalt.fuelle(inhalt.bedienung.teil, { teil: punkt.teil, name: inhalt.teile[punkt.teil] })),
     el('fieldset', {},
       el('legend', {}, punkt.frage),
       ...radios,
     ),
     tippBereich,
     ...(punkt.zusatz ? [zusatzansicht(punkt.zusatz)] : []),
-    el('p', { class: 'quelle' }, `Quelle: ${punkt.quelle}`),
+    el('p', { class: 'quelle' }, inhalt.fuelle(inhalt.bedienung.quelle, { quelle: punkt.quelle })),
     fehlerBereich,
     el('button', { type: 'button', onclick: () => {
       if (gewaehlt === KEINE_ANTWORT) fehlerBereich.replaceChildren(el('p', { role: 'alert', class: 'fehler' }, inhalt.fehlerKeineAntwort));
       else weiter();
-    } }, 'Weiter'),
-    el('button', { type: 'button', onclick: zurueck }, 'Zurück'),
+    } }, inhalt.bedienung.weiter),
+    el('button', { type: 'button', onclick: zurueck }, inhalt.bedienung.zurueck),
   );
 }
 

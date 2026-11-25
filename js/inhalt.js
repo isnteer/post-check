@@ -39,6 +39,20 @@ export const pruefpunkte = [
   },
 ];
 
+export const bedienung = {
+  starten: 'Check starten',
+  weiter: 'Weiter',
+  zurueck: 'Zurück',
+  fortschritt: 'Fortschritt',
+  pruefpunkt: 'Prüfpunkt {nummer} von {anzahl}',
+  teil: 'Teil {teil}: {name}',
+  quelle: 'Quelle: {quelle}',
+};
+
+export function fuelle(vorlage, werte) {
+  return vorlage.replace(/\{(\w+)\}/g, (_, name) => werte[name]);
+}
+
 export const fehlerKeineAntwort = 'Wähle eine Antwort, bevor du weitergehst.';
 
 export const meldungKeineWarnzeichen =

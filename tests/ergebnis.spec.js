@@ -1,6 +1,7 @@
 const { test, expect } = require('@playwright/test');
 const dokument = require('./inhalt-dokument');
 
+const bedienung = dokument.bedienung();
 const [keineWarnzeichen, vorsicht] = dokument.ergebnismeldungen();
 
 const { UNAUFFAELLIG, AUFFAELLIG, NICHT_PRUEFBAR, pruefeDurch } = require('./helfer');
@@ -81,7 +82,7 @@ test('«Antworten ändern» führt zu Prüfpunkt 1 mit allen Antworten', async (
   await expect(page.getByRole('heading', { level: 2 })).toHaveText('Prüfpunkt 1 von 12');
   for (const antwort of antworten) {
     await expect(page.getByRole('radio', { name: antwort, exact: true })).toBeChecked();
-    await page.getByRole('button', { name: 'Weiter' }).click();
+    await page.getByRole('button', { name: bedienung.weiter }).click();
   }
   await expect(page.getByRole('heading', { level: 2 })).toHaveText(vorsicht);
 });
@@ -92,7 +93,7 @@ test('geänderte Antworten ändern das Ergebnis', async ({ page }) => {
   await page.getByRole('button', { name: 'Antworten ändern' }).click();
   for (let nummer = 1; nummer <= 12; nummer++) {
     if (nummer === 6) await page.getByRole('radio', { name: UNAUFFAELLIG, exact: true }).check();
-    await page.getByRole('button', { name: 'Weiter' }).click();
+    await page.getByRole('button', { name: bedienung.weiter }).click();
   }
   await expect(page.getByRole('heading', { level: 2 })).toHaveText(keineWarnzeichen);
   await expect(page.getByRole('region', { name: 'Warnzeichen' })).toHaveCount(0);
@@ -102,12 +103,12 @@ test('«Neuen Post prüfen» setzt alles zurück und zeigt die Startseite', asyn
   await pruefeDurch(page, antwortenMit({ 1: AUFFAELLIG }));
   await page.getByRole('button', { name: 'Neuen Post prüfen' }).click();
   await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
-  await expect(page.getByRole('button', { name: 'Check starten' })).toBeVisible();
-  await page.getByRole('button', { name: 'Check starten' }).click();
+  await expect(page.getByRole('button', { name: bedienung.starten })).toBeVisible();
+  await page.getByRole('button', { name: bedienung.starten }).click();
   await expect(page.getByRole('radio', { checked: true })).toHaveCount(0);
   for (let nummer = 1; nummer <= 12; nummer++) {
     await page.getByRole('radio', { name: UNAUFFAELLIG, exact: true }).check();
-    await page.getByRole('button', { name: 'Weiter' }).click();
+    await page.getByRole('button', { name: bedienung.weiter }).click();
   }
   await expect(page.getByRole('heading', { level: 2 })).toHaveText(keineWarnzeichen);
 });

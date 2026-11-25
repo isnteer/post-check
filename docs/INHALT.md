@@ -72,6 +72,11 @@ Die Quelle steht klein beim Prüfpunkt. Der Tipp erscheint bei «auffällig».
 
 - Fehlermeldung ohne Antwort: Wähle eine Antwort, bevor du weitergehst.
 - Knöpfe: Check starten, Weiter, Zurück
+- Beschriftung des Fortschrittsbalkens: Fortschritt
+- Überschrift des Prüfpunkts: Prüfpunkt n von 12
+- Zeile für Teil A: Teil A: Absender und Kontext
+- Zeile für Teil B: Teil B: Bild
+- Quellenzeile: «Quelle: » und die Quelle des Prüfpunkts
 
 ## Ergebnis
 

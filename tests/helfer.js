@@ -1,10 +1,13 @@
+const dokument = require('./inhalt-dokument');
+
+const bedienung = dokument.bedienung();
 const UNAUFFAELLIG = 'unauffällig';
 const AUFFAELLIG = 'auffällig';
 const NICHT_PRUEFBAR = 'kann ich nicht prüfen';
 
 async function startePruefung(page) {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Check starten' }).click();
+  await page.getByRole('button', { name: bedienung.starten }).click();
 }
 
 async function waehle(page, antwort) {
@@ -12,7 +15,7 @@ async function waehle(page, antwort) {
 }
 
 async function weiter(page) {
-  await page.getByRole('button', { name: 'Weiter' }).click();
+  await page.getByRole('button', { name: bedienung.weiter }).click();
 }
 
 async function beantworte(page, antwort) {

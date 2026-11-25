@@ -2,6 +2,9 @@ const { test, expect } = require('@playwright/test');
 const AxeBuilder = require('@axe-core/playwright').default;
 const { UNAUFFAELLIG, AUFFAELLIG, NICHT_PRUEFBAR, pruefeDurch, zumPruefpunkt } = require('./helfer');
 
+const dokument = require('./inhalt-dokument');
+
+const bedienung = dokument.bedienung();
 const SCHRIFT = 'Atkinson Hyperlegible Next';
 
 const vorsichtMitBeidenListen = [
@@ -45,7 +48,7 @@ for (const [name, oeffne] of Object.entries(ansichten)) {
 test('der ganze Check lässt sich nur mit der Tastatur bis zum Ergebnis durchspielen', async ({ page }) => {
   await page.goto('/');
   await page.keyboard.press('Tab');
-  await expect(page.getByRole('button', { name: 'Check starten' })).toBeFocused();
+  await expect(page.getByRole('button', { name: bedienung.starten })).toBeFocused();
   await page.keyboard.press('Enter');
   for (let nummer = 1; nummer <= 12; nummer++) {
     await expect(page.getByRole('heading', { level: 2 })).toHaveText(`Prüfpunkt ${nummer} von 12`);
@@ -60,7 +63,7 @@ test('der ganze Check lässt sich nur mit der Tastatur bis zum Ergebnis durchspi
     await expect(page.getByRole('radio', { name: UNAUFFAELLIG, exact: true })).toBeChecked();
     if (nummer === 12) await page.keyboard.press('Tab');
     await page.keyboard.press('Tab');
-    await expect(page.getByRole('button', { name: 'Weiter' })).toBeFocused();
+    await expect(page.getByRole('button', { name: bedienung.weiter })).toBeFocused();
     await page.keyboard.press('Enter');
   }
   await expect(page.getByRole('heading', { level: 2 })).toContainText('Keine Warnzeichen gefunden');
