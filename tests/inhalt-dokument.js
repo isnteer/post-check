@@ -79,4 +79,14 @@ function ergebnismeldungen() {
     .map((eintrag) => eintrag.replace(/\s*\n\s*/g, ' ').trim());
 }
 
-module.exports = { pruefpunkte, tipps, zusatz, fuss, ergebnismeldungen };
+function tacho() {
+  const zeilen = abschnitt('Tacho');
+  const wert = (name) => zeilen.find((zeile) => zeile.startsWith(`${name}: `)).slice(name.length + 2);
+  return {
+    links: wert('Skala links'),
+    rechts: wert('Skala rechts'),
+    grauZone: wert('Graue Zone'),
+  };
+}
+
+module.exports = { pruefpunkte, tipps, zusatz, fuss, ergebnismeldungen, tacho };

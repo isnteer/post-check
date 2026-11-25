@@ -90,6 +90,17 @@ Du hast nichts Auffälliges gefunden.
 
 Knöpfe: Antworten ändern; Neuen Post prüfen
 
+## Tacho
+
+Skala links: wenig Zweifel
+
+Skala rechts: viel Zweifel
+
+Graue Zone: keine Warnzeichen
+
+Der Tacho steht auf der Ergebnisseite unter der Meldung und ist für
+Screenreader ausgeblendet.
+
 ## Fuss
 
 Vertiefungsarbeit von Jérôme Golaz und Nils Steiner, BBZW Sursee, 2026
