@@ -1,0 +1,12 @@
+{
+  "name": "post-check",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Echt oder Fake? – Der Post-Check",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0"
+  }
+}
