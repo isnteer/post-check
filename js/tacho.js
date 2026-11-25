@@ -1,4 +1,4 @@
-import { svgEl } from './dom.js';
+import { el } from './dom.js';
 import { SCHWELLE_VORSICHT } from './auswertung.js';
 import { tacho as beschriftung } from './inhalt.js';
 
@@ -30,7 +30,7 @@ function koordinate(grad, radius) {
 function bogen(vonGrad, bisGrad, klasse) {
   const start = koordinate(vonGrad, RADIUS);
   const ende = koordinate(bisGrad, RADIUS);
-  return svgEl('path', {
+  return el('path', {
     class: klasse,
     d: `M ${start.x} ${start.y} A ${RADIUS} ${RADIUS} 0 0 1 ${ende.x} ${ende.y}`,
     fill: 'none',
@@ -49,8 +49,8 @@ function farbsegmente() {
 }
 
 function text(klasse, x, y, anker, ...zeilen) {
-  return svgEl('text', { class: klasse, x, y, 'text-anchor': anker },
-    ...zeilen.map((zeile, i) => svgEl('tspan', { x, dy: i === 0 ? 0 : 12 }, i < zeilen.length - 1 ? `${zeile} ` : zeile)),
+  return el('text', { class: klasse, x, y, 'text-anchor': anker },
+    ...zeilen.map((zeile, i) => el('tspan', { x, dy: i === 0 ? 0 : 12 }, i < zeilen.length - 1 ? `${zeile} ` : zeile)),
   );
 }
 
@@ -63,8 +63,8 @@ function schlageAus(nadel, winkel) {
 
 export function tacho(zweifel) {
   const nadelspitze = koordinate(0, RADIUS - BREITE / 2 - 4);
-  const nadel = svgEl('g', { class: 'nadel' },
-    svgEl('line', {
+  const nadel = el('g', { class: 'nadel' },
+    el('line', {
       x1: MITTE.x,
       y1: MITTE.y,
       x2: nadelspitze.x,
@@ -72,9 +72,9 @@ export function tacho(zweifel) {
       'stroke-width': 4,
       'stroke-linecap': 'round',
     }),
-    svgEl('circle', { cx: MITTE.x, cy: MITTE.y, r: 7 }),
+    el('circle', { cx: MITTE.x, cy: MITTE.y, r: 7 }),
   );
-  const zeichnung = svgEl('svg', {
+  const zeichnung = el('svg', {
     class: 'tacho',
     viewBox: '0 0 240 150',
     'aria-hidden': 'true',
