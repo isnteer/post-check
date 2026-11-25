@@ -31,6 +31,8 @@ export const pruefpunkte = [
   { teil: 'B', frage: 'Findet der SynthID Detector ein KI-Wasserzeichen?', quelle: 'Trachsel 2026', tipp: 'Ein gefundenes Wasserzeichen ist ein starkes Indiz für ein KI-Bild. Teil den Post nicht als echte Aufnahme.' },
 ];
 
+export const fehlerKeineAntwort = 'Wähle eine Antwort, bevor du weitergehst.';
+
 export const meldungKeineWarnzeichen =
   'Keine Warnzeichen gefunden – aber auch ein Post ohne Warnzeichen kann ein Fake sein';
 

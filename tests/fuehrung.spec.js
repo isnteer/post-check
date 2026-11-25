@@ -39,3 +39,15 @@ test('der Tipp verschwindet, sobald die Antwort wechselt', async ({ page }) => {
   await waehle(page, 'kann ich nicht prüfen');
   await expect(page.getByText(tipp, { exact: true })).toHaveCount(0);
 });
+
+test('«Weiter» ohne Antwort bleibt auf dem Prüfpunkt und zeigt eine Fehlermeldung', async ({ page }) => {
+  await startePruefung(page);
+  await weiter(page);
+  await expect(page.getByRole('heading', { level: 2 })).toHaveText('Prüfpunkt 1 von 12');
+  await expect(page.getByRole('alert')).toHaveText('Wähle eine Antwort, bevor du weitergehst.');
+  await waehle(page, 'unauffällig');
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await weiter(page);
+  await expect(page.getByRole('heading', { level: 2 })).toHaveText('Prüfpunkt 2 von 12');
+  await expect(page.getByRole('alert')).toHaveCount(0);
+});

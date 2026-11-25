@@ -16,12 +16,16 @@ export function pruefpunktansicht({ index, antwort, waehlen, weiter }) {
     tippBereich.replaceChildren(...(wert === 'auffaellig' ? [el('p', { class: 'tipp' }, punkt.tipp)] : []));
   };
   zeigeTipp(antwort);
+  let gewaehlt = antwort;
+  const fehlerBereich = el('div', { class: 'fehler-bereich' });
   const radios = inhalt.antworten.map(({ wert, beschriftung }) => {
     const eingabe = el('input', { type: 'radio', name: 'antwort', value: wert });
     eingabe.checked = antwort === wert;
     eingabe.addEventListener('change', () => {
+      gewaehlt = wert;
       waehlen(wert);
       zeigeTipp(wert);
+      fehlerBereich.replaceChildren();
     });
     return el('label', { class: 'antwort' }, eingabe, beschriftung);
   });
@@ -34,7 +38,11 @@ export function pruefpunktansicht({ index, antwort, waehlen, weiter }) {
     ),
     tippBereich,
     el('p', { class: 'quelle' }, `Quelle: ${punkt.quelle}`),
-    el('button', { type: 'button', onclick: weiter }, 'Weiter'),
+    fehlerBereich,
+    el('button', { type: 'button', onclick: () => {
+      if (gewaehlt === null) fehlerBereich.replaceChildren(el('p', { role: 'alert', class: 'fehler' }, inhalt.fehlerKeineAntwort));
+      else weiter();
+    } }, 'Weiter'),
   );
 }
 
