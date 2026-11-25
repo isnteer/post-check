@@ -90,6 +90,9 @@ Die Quelle steht klein beim Prüfpunkt. Der Tipp erscheint bei «auffällig».
 
 Überschrift der zweiten Liste: Konntest du nicht prüfen
 
+Jedes Warnzeichen beginnt mit der Nummer seines Prüfpunkts, zum Beispiel
+«3. Wie sieht das Profil aus? …».
+
 Merksatz: Diese Seite sagt nie, ein Post sei echt. Ohne Warnzeichen heisst nur:
 Du hast nichts Auffälliges gefunden.
 

@@ -62,7 +62,7 @@ export function ergebnisansicht({ auswertung, aendern, neu }) {
     auswertung.ergebnis === ERGEBNIS.VORSICHT ? inhalt.meldungVorsicht : inhalt.meldungKeineWarnzeichen;
   const warnzeichen = auswertung.warnzeichen.map((index) => {
     const punkt = inhalt.pruefpunkte[index];
-    return el('li', {}, el('p', {}, punkt.frage), el('p', {}, punkt.tipp));
+    return el('li', {}, el('p', {}, `${index + 1}. ${punkt.frage}`), el('p', {}, punkt.tipp));
   });
   const nichtPruefbar = auswertung.nichtPruefbar.map((index) =>
     el('li', {}, inhalt.pruefpunkte[index].frage),

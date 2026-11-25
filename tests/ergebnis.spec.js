@@ -26,7 +26,7 @@ test('genau 1 Warnzeichen ergibt «Vorsicht» mit diesem Prüfpunkt und seinem T
   await expect(page.getByRole('heading', { level: 2 })).toHaveText(vorsicht);
   const liste = page.getByRole('region', { name: 'Warnzeichen' });
   await expect(liste.getByRole('listitem')).toHaveCount(1);
-  await expect(liste.getByRole('listitem')).toContainText(punkt.frage);
+  await expect(liste.getByRole('listitem').locator('p').first()).toHaveText(`5. ${punkt.frage}`);
   await expect(liste.getByRole('listitem')).toContainText(tipp);
   await expect(page.getByRole('region', { name: 'Konntest du nicht prüfen' })).toHaveCount(0);
 });
