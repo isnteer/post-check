@@ -16,7 +16,8 @@ async function weiter(page) {
 
 test('«auffällig» zeigt bei jedem der 12 Prüfpunkte den Tipp im Wortlaut in einer live region', async ({ page }) => {
   await startePruefung(page);
-  for (const { nummer, tipp } of dokument.tipps()) {
+  for (const [i, tipp] of dokument.tipps().entries()) {
+    const nummer = i + 1;
     await expect(page.getByRole('heading', { level: 2 })).toHaveText(`Prüfpunkt ${nummer} von 12`);
     await expect(page.getByText(tipp, { exact: true })).toHaveCount(0);
     await waehle(page, 'auffällig');
@@ -29,7 +30,7 @@ test('«auffällig» zeigt bei jedem der 12 Prüfpunkte den Tipp im Wortlaut in 
 
 test('der Tipp verschwindet, sobald die Antwort wechselt', async ({ page }) => {
   await startePruefung(page);
-  const [{ tipp }] = dokument.tipps();
+  const [tipp] = dokument.tipps();
   await waehle(page, 'auffällig');
   await expect(page.getByText(tipp, { exact: true })).toBeVisible();
   await waehle(page, 'unauffällig');
@@ -67,7 +68,7 @@ test('«Zurück» zeigt den vorherigen Prüfpunkt mit Antwort und Tipp', async (
   await page.getByRole('button', { name: 'Zurück' }).click();
   await expect(page.getByRole('heading', { level: 2 })).toHaveText('Prüfpunkt 1 von 12');
   await expect(page.getByRole('radio', { name: 'auffällig', exact: true })).toBeChecked();
-  await expect(page.getByText(tipps[0].tipp, { exact: true })).toBeVisible();
+  await expect(page.getByText(tipps[0], { exact: true })).toBeVisible();
   await weiter(page);
   await weiter(page);
   await expect(page.getByRole('radio', { name: 'unauffällig', exact: true })).toBeChecked();

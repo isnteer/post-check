@@ -31,26 +31,24 @@ function pruefpunkte() {
 }
 
 function tipps() {
-  const zeilen = abschnitt('Prüfpunkte und Tipps');
   const ergebnis = [];
   let aktuell = null;
   let imTipp = false;
-  for (const zeile of zeilen) {
-    const kopf = zeile.match(/^(\d+)\. /);
-    if (kopf) {
-      aktuell = { nummer: Number(kopf[1]), zeilen: [] };
+  for (const zeile of abschnitt('Prüfpunkte und Tipps')) {
+    if (/^\d+\. /.test(zeile)) {
+      aktuell = [];
       ergebnis.push(aktuell);
       imTipp = false;
-    } else if (aktuell && /^\s+Tipp: /.test(zeile)) {
+    } else if (/^\s+Tipp: /.test(zeile)) {
+      aktuell.push(zeile.trim().slice('Tipp: '.length));
       imTipp = true;
-      aktuell.zeilen.push(zeile.trim().slice('Tipp: '.length));
-    } else if (aktuell && imTipp && (/^\s+Zusatz/.test(zeile) || zeile.startsWith('#'))) {
+    } else if (/^\s+Zusatz/.test(zeile) || zeile.trim() === '') {
       imTipp = false;
-    } else if (aktuell && imTipp && zeile.trim() !== '') {
-      aktuell.zeilen.push(zeile.trim());
+    } else if (imTipp) {
+      aktuell.push(zeile.trim());
     }
   }
-  return ergebnis.map(({ nummer, zeilen: teile }) => ({ nummer, tipp: teile.join(' ') }));
+  return ergebnis.map((zeilen) => zeilen.join(' '));
 }
 
 function zusatz() {

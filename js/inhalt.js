@@ -42,6 +42,17 @@ export const fehlerKeineAntwort = 'Wähle eine Antwort, bevor du weitergehst.';
 export const meldungKeineWarnzeichen =
   'Keine Warnzeichen gefunden – aber auch ein Post ohne Warnzeichen kann ein Fake sein';
 
+export const meldungVorsicht = 'Vorsicht: erst prüfen, dann teilen';
+
+export const ergebnisseite = {
+  warnzeichenTitel: 'Warnzeichen',
+  nichtPruefbarTitel: 'Konntest du nicht prüfen',
+  merksatz:
+    'Diese Seite sagt nie, ein Post sei echt. Ohne Warnzeichen heisst nur: Du hast nichts Auffälliges gefunden.',
+  aendern: 'Antworten ändern',
+  neu: 'Neuen Post prüfen',
+};
+
 export const fuss = {
   arbeit: 'Vertiefungsarbeit von Jérôme Golaz und Nils Steiner, BBZW Sursee, 2026',
   quellenTitel: 'Quellen:',

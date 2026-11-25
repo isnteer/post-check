@@ -79,6 +79,17 @@ Die Quelle steht klein beim Prüfpunkt. Der Tipp erscheint bei «auffällig».
   Fake sein
 - Vorsicht: erst prüfen, dann teilen
 
+## Ergebnisseite
+
+Überschrift der ersten Liste: Warnzeichen
+
+Überschrift der zweiten Liste: Konntest du nicht prüfen
+
+Merksatz: Diese Seite sagt nie, ein Post sei echt. Ohne Warnzeichen heisst nur:
+Du hast nichts Auffälliges gefunden.
+
+Knöpfe: Antworten ändern; Neuen Post prüfen
+
 ## Fuss
 
 Vertiefungsarbeit von Jérôme Golaz und Nils Steiner, BBZW Sursee, 2026

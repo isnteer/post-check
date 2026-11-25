@@ -1,4 +1,5 @@
 import * as ansichten from './ansichten.js';
+import { wertAus } from './auswertung.js';
 import { pruefpunkte } from './inhalt.js';
 
 export function starteAblauf({ ansicht, fuss }) {
@@ -24,7 +25,14 @@ export function starteAblauf({ ansicht, fuss }) {
   }
 
   function zeigeErgebnis() {
-    zeige(ansichten.ergebnisansicht());
+    zeige(ansichten.ergebnisansicht({
+      auswertung: wertAus(antworten),
+      aendern: () => zeigePruefpunkt(0),
+      neu: () => {
+        antworten.fill(null);
+        zeigeStart();
+      },
+    }));
   }
 
   fuss.replaceChildren(...ansichten.fussansicht());
