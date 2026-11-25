@@ -8,3 +8,8 @@ test('Startseite erklärt den Check und führt mit «Check starten» zu Prüfpun
   await page.getByRole('button', { name: 'Check starten' }).click();
   await expect(page.getByRole('group', { name: /^Wer hat den Post veröffentlicht\?/ })).toBeVisible();
 });
+
+test('der Referrer wird nicht weitergegeben', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('meta[name="referrer"]')).toHaveAttribute('content', 'no-referrer');
+});
