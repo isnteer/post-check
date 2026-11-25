@@ -3,23 +3,12 @@ const dokument = require('./inhalt-dokument');
 
 const [keineWarnzeichen, vorsicht] = dokument.ergebnismeldungen();
 
-const UNAUFFAELLIG = 'unauffällig';
-const AUFFAELLIG = 'auffällig';
-const NICHT_PRUEFBAR = 'kann ich nicht prüfen';
+const { UNAUFFAELLIG, AUFFAELLIG, NICHT_PRUEFBAR, pruefeDurch } = require('./helfer');
 
 function antwortenMit(ersetzungen, grundantwort = UNAUFFAELLIG) {
   const antworten = new Array(12).fill(grundantwort);
   for (const [nummer, antwort] of Object.entries(ersetzungen)) antworten[nummer - 1] = antwort;
   return antworten;
-}
-
-async function pruefeDurch(page, antworten) {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Check starten' }).click();
-  for (const antwort of antworten) {
-    await page.getByRole('radio', { name: antwort, exact: true }).check();
-    await page.getByRole('button', { name: 'Weiter' }).click();
-  }
 }
 
 test('12× «unauffällig» ergibt «Keine Warnzeichen gefunden» ohne Listen', async ({ page }) => {

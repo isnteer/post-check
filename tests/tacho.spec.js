@@ -1,24 +1,13 @@
 const { test, expect } = require('@playwright/test');
 const dokument = require('./inhalt-dokument');
 
-const UNAUFFAELLIG = 'unauffällig';
-const AUFFAELLIG = 'auffällig';
-const NICHT_PRUEFBAR = 'kann ich nicht prüfen';
+const { UNAUFFAELLIG, AUFFAELLIG, NICHT_PRUEFBAR, pruefeDurch } = require('./helfer');
 
 const GRAU_BIS_GRAD = 60;
 const VOLL_GRAD = 180;
 
 function antwortenMit(anzahl, antwort, grundantwort = UNAUFFAELLIG) {
   return [...new Array(anzahl).fill(antwort), ...new Array(12 - anzahl).fill(grundantwort)];
-}
-
-async function pruefeDurch(page, antworten) {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Check starten' }).click();
-  for (const antwort of antworten) {
-    await page.getByRole('radio', { name: antwort, exact: true }).check();
-    await page.getByRole('button', { name: 'Weiter' }).click();
-  }
 }
 
 async function nadelwinkel(page) {
