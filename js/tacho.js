@@ -49,7 +49,7 @@ function farbsegmente() {
 
 function text(klasse, x, y, anker, ...zeilen) {
   return svgEl('text', { class: klasse, x, y, 'text-anchor': anker },
-    ...zeilen.map((zeile, i) => svgEl('tspan', { x, dy: i === 0 ? 0 : 12 }, zeile)),
+    ...zeilen.map((zeile, i) => svgEl('tspan', { x, dy: i === 0 ? 0 : 12 }, i < zeilen.length - 1 ? `${zeile} ` : zeile)),
   );
 }
 
