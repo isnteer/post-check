@@ -9,23 +9,50 @@ export function startansicht({ starten }) {
   );
 }
 
-export function pruefpunktansicht({ index, antwort, waehlen, weiter }) {
+export function pruefpunktansicht({ index, antwort, waehlen, weiter, zurueck }) {
   const punkt = inhalt.pruefpunkte[index];
+  const tippBereich = el('div', { 'aria-live': 'polite', class: 'tipp-bereich' });
+  const zeigeTipp = (wert) => {
+    tippBereich.replaceChildren(...(wert === 'auffaellig' ? [el('p', { class: 'tipp' }, punkt.tipp)] : []));
+  };
+  zeigeTipp(antwort);
+  let gewaehlt = antwort;
+  const fehlerBereich = el('div', { class: 'fehler-bereich' });
   const radios = inhalt.antworten.map(({ wert, beschriftung }) => {
     const eingabe = el('input', { type: 'radio', name: 'antwort', value: wert });
     eingabe.checked = antwort === wert;
-    eingabe.addEventListener('change', () => waehlen(wert));
+    eingabe.addEventListener('change', () => {
+      gewaehlt = wert;
+      waehlen(wert);
+      zeigeTipp(wert);
+      fehlerBereich.replaceChildren();
+    });
     return el('label', { class: 'antwort' }, eingabe, beschriftung);
   });
   return el('section', {},
     el('h2', { tabindex: '-1' }, `Prüfpunkt ${index + 1} von ${inhalt.pruefpunkte.length}`),
+    el('progress', { max: String(inhalt.pruefpunkte.length), value: String(index + 1), 'aria-label': 'Fortschritt' }),
     el('p', {}, `Teil ${punkt.teil}: ${inhalt.teile[punkt.teil]}`),
     el('fieldset', {},
       el('legend', {}, punkt.frage),
       ...radios,
     ),
+    tippBereich,
+    ...(punkt.zusatz ? [zusatzansicht(punkt.zusatz)] : []),
     el('p', { class: 'quelle' }, `Quelle: ${punkt.quelle}`),
-    el('button', { type: 'button', onclick: weiter }, 'Weiter'),
+    fehlerBereich,
+    el('button', { type: 'button', onclick: () => {
+      if (gewaehlt === null) fehlerBereich.replaceChildren(el('p', { role: 'alert', class: 'fehler' }, inhalt.fehlerKeineAntwort));
+      else weiter();
+    } }, 'Weiter'),
+    el('button', { type: 'button', onclick: zurueck }, 'Zurück'),
+  );
+}
+
+function zusatzansicht({ link, hinweis }) {
+  return el('div', { class: 'zusatz' },
+    el('p', {}, el('a', { href: link, target: '_blank', rel: 'noopener noreferrer' }, link)),
+    el('p', {}, hinweis),
   );
 }
 

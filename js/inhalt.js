@@ -28,8 +28,16 @@ export const pruefpunkte = [
   { teil: 'B', frage: 'Ist die Schrift im Bild korrekt und lesbar?', quelle: 'SRF 2025', tipp: 'Zoom auf Schilder und Texte. Verdrehte Buchstaben oder Fantasiewörter deuten auf KI hin.' },
   { teil: 'B', frage: 'Sehen bekannte Orte und Gebäude so aus wie in Wirklichkeit?', quelle: 'SRF 2025', tipp: 'Vergleiche den Ort mit Fotos aus einer Bildersuche oder mit Google Street View.' },
   { teil: 'B', frage: 'Stimmen Schatten, Licht und Perspektive? Gibt es Fehler im Hintergrund, während ein Blickfang ablenkt?', quelle: 'SRF 2025', tipp: 'Schau weg vom Blickfang: Prüf die Ränder und ob alle Schatten in dieselbe Richtung fallen.' },
-  { teil: 'B', frage: 'Findet der SynthID Detector ein KI-Wasserzeichen?', quelle: 'Trachsel 2026', tipp: 'Ein gefundenes Wasserzeichen ist ein starkes Indiz für ein KI-Bild. Teil den Post nicht als echte Aufnahme.' },
+  {
+    teil: 'B', frage: 'Findet der SynthID Detector ein KI-Wasserzeichen?', quelle: 'Trachsel 2026', tipp: 'Ein gefundenes Wasserzeichen ist ein starkes Indiz für ein KI-Bild. Teil den Post nicht als echte Aufnahme.',
+    zusatz: {
+      link: 'https://synthid.com/',
+      hinweis: 'Nur ein Indiz. Ohne Wasserzeichen ist ein Bild nicht automatisch echt. Der Detector erkennt nur Bilder von Anbietern wie Google und OpenAI.',
+    },
+  },
 ];
+
+export const fehlerKeineAntwort = 'Wähle eine Antwort, bevor du weitergehst.';
 
 export const meldungKeineWarnzeichen =
   'Keine Warnzeichen gefunden – aber auch ein Post ohne Warnzeichen kann ein Fake sein';

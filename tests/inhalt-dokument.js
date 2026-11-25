@@ -51,6 +51,19 @@ function tipps() {
   return ergebnis.map((zeilen) => zeilen.join(' '));
 }
 
+function zusatz() {
+  const zeilen = abschnitt('Prüfpunkte und Tipps');
+  const start = zeilen.findIndex((zeile) => /^\s+Zusatz/.test(zeile));
+  const text = zeilen
+    .slice(start)
+    .filter((zeile) => !zeile.startsWith('#'))
+    .map((zeile) => zeile.trim())
+    .join(' ')
+    .trim();
+  const [, link, hinweis] = text.match(/Link auf (\S+) und der Hinweis: (.*)$/);
+  return { link, hinweis };
+}
+
 function fuss() {
   const zeilen = abschnitt('Fuss');
   const arbeit = zeilen.find((zeile) => zeile.startsWith('Vertiefungsarbeit'));
@@ -66,4 +79,4 @@ function ergebnismeldungen() {
     .map((eintrag) => eintrag.replace(/\s*\n\s*/g, ' ').trim());
 }
 
-module.exports = { pruefpunkte, tipps, fuss, ergebnismeldungen };
+module.exports = { pruefpunkte, tipps, zusatz, fuss, ergebnismeldungen };
