@@ -1,5 +1,6 @@
 import { el } from './dom.js';
 import * as inhalt from './inhalt.js';
+import { tacho } from './tacho.js';
 
 export function startansicht({ starten }) {
   return el('section', {},
@@ -41,6 +42,7 @@ export function ergebnisansicht({ auswertung, aendern, neu }) {
   );
   return el('section', {},
     el('h2', { tabindex: '-1' }, meldung),
+    tacho(auswertung.zweifel),
     ...liste('warnzeichen-titel', inhalt.ergebnisseite.warnzeichenTitel, warnzeichen),
     ...liste('nicht-pruefbar-titel', inhalt.ergebnisseite.nichtPruefbarTitel, nichtPruefbar),
     el('p', {}, inhalt.ergebnisseite.merksatz),

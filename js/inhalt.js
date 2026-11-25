@@ -45,6 +45,12 @@ export const ergebnisseite = {
   neu: 'Neuen Post prüfen',
 };
 
+export const tacho = {
+  links: 'wenig Zweifel',
+  rechts: 'viel Zweifel',
+  grauZone: 'keine Warnzeichen',
+};
+
 export const fuss = {
   arbeit: 'Vertiefungsarbeit von Jérôme Golaz und Nils Steiner, BBZW Sursee, 2026',
   quellenTitel: 'Quellen:',

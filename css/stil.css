@@ -35,3 +35,47 @@ button {
   font: inherit;
   padding: 0.75rem 1.25rem;
 }
+
+:root {
+  --tacho-grau: #8a8a8a;
+  --tacho-orange: #e8890c;
+  --tacho-rot: #c0261c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tacho-grau: #8a8a8a;
+    --tacho-orange: #f2a03d;
+    --tacho-rot: #ee5a4e;
+  }
+}
+
+.tacho {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  margin: 1rem auto;
+}
+
+.tacho .grau {
+  stroke: var(--tacho-grau);
+}
+
+.tacho .nadel {
+  stroke: currentColor;
+  fill: currentColor;
+  transform-box: view-box;
+  transform-origin: 120px 115px;
+  transition: transform 0.8s ease-out;
+}
+
+.tacho text {
+  fill: currentColor;
+  font-size: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tacho .nadel {
+    transition: none;
+  }
+}
