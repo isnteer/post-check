@@ -51,3 +51,32 @@ test('«Weiter» ohne Antwort bleibt auf dem Prüfpunkt und zeigt eine Fehlermel
   await expect(page.getByRole('heading', { level: 2 })).toHaveText('Prüfpunkt 2 von 12');
   await expect(page.getByRole('alert')).toHaveCount(0);
 });
+
+test('«Zurück» zeigt den vorherigen Prüfpunkt mit Antwort und Tipp', async ({ page }) => {
+  await startePruefung(page);
+  const tipps = dokument.tipps();
+  await waehle(page, 'auffällig');
+  await weiter(page);
+  await waehle(page, 'kann ich nicht prüfen');
+  await weiter(page);
+  await waehle(page, 'unauffällig');
+  await page.getByRole('button', { name: 'Zurück' }).click();
+  await expect(page.getByRole('heading', { level: 2 })).toHaveText('Prüfpunkt 2 von 12');
+  await expect(page.getByRole('heading', { level: 2 })).toBeFocused();
+  await expect(page.getByRole('radio', { name: 'kann ich nicht prüfen', exact: true })).toBeChecked();
+  await page.getByRole('button', { name: 'Zurück' }).click();
+  await expect(page.getByRole('heading', { level: 2 })).toHaveText('Prüfpunkt 1 von 12');
+  await expect(page.getByRole('radio', { name: 'auffällig', exact: true })).toBeChecked();
+  await expect(page.getByText(tipps[0].tipp, { exact: true })).toBeVisible();
+  await weiter(page);
+  await weiter(page);
+  await expect(page.getByRole('radio', { name: 'unauffällig', exact: true })).toBeChecked();
+});
+
+test('«Zurück» auf Prüfpunkt 1 führt zur Startseite', async ({ page }) => {
+  await startePruefung(page);
+  await page.getByRole('button', { name: 'Zurück' }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Echt oder Fake? – Der Post-Check');
+  await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
+  await expect(page.getByRole('button', { name: 'Check starten' })).toBeVisible();
+});

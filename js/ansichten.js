@@ -9,7 +9,7 @@ export function startansicht({ starten }) {
   );
 }
 
-export function pruefpunktansicht({ index, antwort, waehlen, weiter }) {
+export function pruefpunktansicht({ index, antwort, waehlen, weiter, zurueck }) {
   const punkt = inhalt.pruefpunkte[index];
   const tippBereich = el('div', { 'aria-live': 'polite', class: 'tipp-bereich' });
   const zeigeTipp = (wert) => {
@@ -43,6 +43,7 @@ export function pruefpunktansicht({ index, antwort, waehlen, weiter }) {
       if (gewaehlt === null) fehlerBereich.replaceChildren(el('p', { role: 'alert', class: 'fehler' }, inhalt.fehlerKeineAntwort));
       else weiter();
     } }, 'Weiter'),
+    el('button', { type: 'button', onclick: zurueck }, 'Zurück'),
   );
 }
 
