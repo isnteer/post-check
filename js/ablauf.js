@@ -19,6 +19,7 @@ export function starteAblauf({ ansicht, fuss }) {
       index,
       antwort: antworten[index],
       waehlen: (wert) => { antworten[index] = wert; },
+      zurueck: () => (index > 0 ? zeigePruefpunkt(index - 1) : zeigeStart()),
       weiter: () => (index + 1 < pruefpunkte.length ? zeigePruefpunkt(index + 1) : zeigeErgebnis()),
     }));
   }

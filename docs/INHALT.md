@@ -68,6 +68,11 @@ Die Quelle steht klein beim Prüfpunkt. Der Tipp erscheint bei «auffällig».
     ein Indiz. Ohne Wasserzeichen ist ein Bild nicht automatisch echt. Der
     Detector erkennt nur Bilder von Anbietern wie Google und OpenAI.
 
+## Bedienung
+
+- Fehlermeldung ohne Antwort: Wähle eine Antwort, bevor du weitergehst.
+- Knöpfe: Check starten, Weiter, Zurück
+
 ## Ergebnis
 
 - Keine Warnzeichen gefunden – aber auch ein Post ohne Warnzeichen kann ein
