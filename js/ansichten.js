@@ -31,6 +31,7 @@ export function pruefpunktansicht({ index, antwort, waehlen, weiter, zurueck }) 
   });
   return el('section', {},
     el('h2', { tabindex: '-1' }, `Prüfpunkt ${index + 1} von ${inhalt.pruefpunkte.length}`),
+    el('progress', { max: String(inhalt.pruefpunkte.length), value: String(index + 1), 'aria-label': 'Fortschritt' }),
     el('p', {}, `Teil ${punkt.teil}: ${inhalt.teile[punkt.teil]}`),
     el('fieldset', {},
       el('legend', {}, punkt.frage),

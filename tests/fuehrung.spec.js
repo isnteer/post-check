@@ -80,3 +80,20 @@ test('«Zurück» auf Prüfpunkt 1 führt zur Startseite', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
   await expect(page.getByRole('button', { name: 'Check starten' })).toBeVisible();
 });
+
+test('Fortschritt zeigt Teil, «n von 12» und einen Balken; bei 7 zu 8 wechselt der Teil', async ({ page }) => {
+  await startePruefung(page);
+  const balken = page.getByRole('progressbar', { name: 'Fortschritt' });
+  for (let n = 1; n <= 12; n++) {
+    await expect(page.getByRole('heading', { level: 2 })).toHaveText(`Prüfpunkt ${n} von 12`);
+    await expect(balken).toHaveJSProperty('value', n);
+    await expect(balken).toHaveJSProperty('max', 12);
+    await expect(balken).toBeVisible();
+    const teil = n <= 7 ? 'Teil A: Absender und Kontext' : 'Teil B: Bild';
+    const anderer = n <= 7 ? 'Teil B: Bild' : 'Teil A: Absender und Kontext';
+    await expect(page.getByText(teil, { exact: true })).toBeVisible();
+    await expect(page.getByText(anderer, { exact: true })).toHaveCount(0);
+    await waehle(page, 'unauffällig');
+    await weiter(page);
+  }
+});
