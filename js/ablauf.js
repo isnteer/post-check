@@ -36,7 +36,7 @@ export function starteAblauf({ titel, ansicht, fuss }) {
     }));
   }
 
-  titel.textContent = titeltext;
+  titel.textContent = titeltext.replace(' – ', '\u00a0– ');
   fuss.replaceChildren(...ansichten.fussansicht());
   zeigeStart();
 }
