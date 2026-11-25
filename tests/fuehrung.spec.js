@@ -97,3 +97,22 @@ test('Fortschritt zeigt Teil, «n von 12» und einen Balken; bei 7 zu 8 wechselt
     await weiter(page);
   }
 });
+
+test('Prüfpunkt 12 zeigt den SynthID-Link und den Hinweis, andere Prüfpunkte nicht', async ({ page }) => {
+  await startePruefung(page);
+  const zusatz = dokument.zusatz();
+  for (let n = 1; n <= 11; n++) {
+    await expect(page.getByRole('link')).toHaveCount(0);
+    await expect(page.getByText(zusatz.hinweis, { exact: true })).toHaveCount(0);
+    await waehle(page, 'unauffällig');
+    await weiter(page);
+  }
+  await expect(page.getByRole('heading', { level: 2 })).toHaveText('Prüfpunkt 12 von 12');
+  const link = page.getByRole('link', { name: zusatz.link });
+  await expect(link).toBeVisible();
+  await expect(link).toHaveAttribute('href', 'https://synthid.com/');
+  await expect(link).toHaveAttribute('target', '_blank');
+  await expect(link).toHaveAttribute('rel', /noreferrer/);
+  await expect(link).toHaveAttribute('rel', /noopener/);
+  await expect(page.getByText(zusatz.hinweis, { exact: true })).toBeVisible();
+});

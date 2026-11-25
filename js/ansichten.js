@@ -38,6 +38,7 @@ export function pruefpunktansicht({ index, antwort, waehlen, weiter, zurueck }) 
       ...radios,
     ),
     tippBereich,
+    ...(punkt.zusatz ? [zusatzansicht(punkt.zusatz)] : []),
     el('p', { class: 'quelle' }, `Quelle: ${punkt.quelle}`),
     fehlerBereich,
     el('button', { type: 'button', onclick: () => {
@@ -45,6 +46,13 @@ export function pruefpunktansicht({ index, antwort, waehlen, weiter, zurueck }) 
       else weiter();
     } }, 'Weiter'),
     el('button', { type: 'button', onclick: zurueck }, 'Zurück'),
+  );
+}
+
+function zusatzansicht({ link, hinweis }) {
+  return el('div', { class: 'zusatz' },
+    el('p', {}, el('a', { href: link, target: '_blank', rel: 'noopener noreferrer' }, link)),
+    el('p', {}, hinweis),
   );
 }
 
