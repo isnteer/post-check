@@ -46,3 +46,11 @@ an Google schicken; das widerspricht «ohne Tracking».
 
 GitHub Pages ist mit einem Gratis-Konto nur für öffentliche Repos möglich. Die
 Seite soll nichts kosten, also ist `isnteer/post-check` öffentlich.
+
+## Farbe statt hell und dunkel
+
+Die Seite ist randlos eine Farbfläche: Violett für Start und Teil A, Magenta
+für Teil B, Tinte für das Ergebnis. So wirkt sie am Handy wie eine Story und
+am Desktop nicht wie ein verkleinertes Handy. Die Flächen sehen im hellen und
+im dunklen Modus gleich aus; nur die Tinte des Ergebnisses wird im dunklen
+Modus etwas heller. Kontraste erfüllen in beiden Modi WCAG AA.
