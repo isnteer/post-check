@@ -8,6 +8,7 @@ export function starteAblauf({ titel, ansicht, fuss }) {
 
   function zeige(inhalt, fokussieren = true) {
     ansicht.replaceChildren(inhalt);
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', getComputedStyle(document.body).backgroundColor);
     if (fokussieren) (ansicht.querySelector('[tabindex="-1"]') ?? titel).focus();
   }
 

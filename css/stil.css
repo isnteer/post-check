@@ -15,9 +15,10 @@
 }
 
 :root {
-  color-scheme: light dark;
+  color-scheme: dark;
   --violett: #3a1fd1;
   --magenta: #b0136a;
+  --tinte: #17151f;
   --gelb: #ffd84a;
   --auf-gelb: #1c1600;
   --weiss: #ffffff;
@@ -26,37 +27,22 @@
   --weiss-flaeche-hover: rgb(255 255 255 / 0.22);
   --weiss-spur: rgb(255 255 255 / 0.3);
   --fehlerrot: #a3140b;
-  --grund: #f3f1fb;
-  --text: #17151f;
-  --text-leise: #4d4a5c;
-  --rand: rgb(23 21 31 / 0.14);
-  --rand-stark: rgb(23 21 31 / 0.28);
-  --tinte: #17151f;
-  --knopf: var(--violett);
-  --auf-knopf: #ffffff;
-  --fokus: var(--violett);
+  --fokus: var(--gelb);
   --sticker-schatten: 0 0.375rem 1rem -0.5rem rgb(10 6 30 / 0.45);
-  --karte-schatten: 0 0.75rem 2rem -1rem rgb(30 16 110 / 0.45);
   --tacho-grau: #8f8ca0;
   --tacho-orange: #f2a03d;
   --tacho-rot: #ff6b5e;
-  --titelgroesse: clamp(2.75rem, 13vw, 3.75rem);
   --rund: 1rem;
-  --karte-rund: 1.5rem;
+  --rand-oben: max(1rem, env(safe-area-inset-top));
+  --rand-seite: 1.25rem;
+  --kopfzeile: 3rem;
+  --titelgroesse: clamp(2.75rem, 13vw, 3.75rem);
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --grund: #0f0d17;
-    --text: #ecebf3;
-    --text-leise: #b6b3c6;
-    --rand: rgb(255 255 255 / 0.14);
-    --rand-stark: rgb(255 255 255 / 0.3);
     --tinte: #221f30;
-    --knopf: #4b33e6;
-    --fokus: var(--gelb);
-    --karte-schatten: 0 0.75rem 2rem -1rem rgb(0 0 0 / 0.7);
   }
 }
 
@@ -74,16 +60,26 @@ body {
 }
 
 body {
-  margin: 0 auto;
+  --feld: var(--violett);
+  box-sizing: border-box;
+  min-height: 100svh;
+  margin: 0;
   padding:
-    max(0.75rem, env(safe-area-inset-top))
-    max(0.5rem, env(safe-area-inset-right))
+    var(--rand-oben)
+    max(var(--rand-seite), env(safe-area-inset-right))
     calc(1.5rem + env(safe-area-inset-bottom, 0px))
-    max(0.5rem, env(safe-area-inset-left));
-  max-width: 30rem;
-  background: var(--grund);
-  color: var(--text);
+    max(var(--rand-seite), env(safe-area-inset-left));
+  background: var(--feld);
+  color: var(--weiss);
   overflow-wrap: anywhere;
+}
+
+body:has(.teil-B) {
+  --feld: var(--magenta);
+}
+
+body:has(.ergebnis) {
+  --feld: var(--tinte);
 }
 
 ::selection {
@@ -99,13 +95,14 @@ h3 {
 }
 
 h1 {
-  margin: 0.25rem 0.75rem 0.75rem;
+  margin: 0;
+  padding-bottom: 0.875rem;
   font-size: 0.9375rem;
-  color: var(--text-leise);
+  color: var(--weiss-leise);
 }
 
 h3 {
-  margin: 2.25rem 0.75rem 0.75rem;
+  margin: 2.25rem 0 0.75rem;
   font-size: 1.25rem;
   letter-spacing: -0.01em;
 }
@@ -127,33 +124,15 @@ h2:focus-visible {
 }
 
 a {
-  color: var(--knopf);
+  color: var(--weiss);
+  font-weight: 700;
   text-decoration-thickness: 0.0625em;
   text-underline-offset: 0.2em;
   touch-action: manipulation;
 }
 
-.start,
-.pruefpunkt,
-.ergebnis-karte,
-body:has(.start) header {
-  --fokus: var(--gelb);
-  color: var(--weiss);
-}
-
-.start a,
-.pruefpunkt a {
-  color: var(--weiss);
-}
-
-body:has(.start) header {
-  padding: 1.75rem 1.25rem 0;
-  background: var(--violett);
-  border-radius: var(--karte-rund) var(--karte-rund) 0 0;
-}
-
 body:has(.start) h1 {
-  margin: 0;
+  padding: 0.75rem 0 0;
   font-size: var(--titelgroesse);
   line-height: 0.98;
   letter-spacing: -0.035em;
@@ -164,13 +143,12 @@ body:has(.start) h1 {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  min-height: max(22rem, calc(100svh - max(0.75rem, env(safe-area-inset-top)) - 2.5rem - 2.94 * var(--titelgroesse)));
-  padding: 1.75rem 1.25rem 1.25rem;
-  background: var(--violett);
-  border-radius: 0 0 var(--karte-rund) var(--karte-rund);
+  min-height: max(20rem, calc(100svh - var(--rand-oben) - 2.5rem - 2.94 * var(--titelgroesse)));
+  padding-top: 1.75rem;
 }
 
 .start p {
+  max-width: 34rem;
   margin: 1.5rem 0 2rem;
   font-size: 1.1875rem;
   line-height: 1.45;
@@ -260,20 +238,11 @@ progress {
 }
 
 .pruefpunkt {
-  --feld: var(--violett);
-  color-scheme: light;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  min-height: min(calc(100svh - 3.75rem), 54rem);
-  padding: 1rem 1.25rem 1.25rem;
-  background: var(--feld);
-  border-radius: var(--karte-rund);
-  box-shadow: var(--karte-schatten);
-}
-
-.pruefpunkt.teil-B {
-  --feld: var(--magenta);
+  min-height: calc(100svh - var(--rand-oben) - var(--kopfzeile));
+  padding-bottom: 0.25rem;
 }
 
 .pruefpunkt .segmente {
@@ -449,10 +418,6 @@ legend {
   margin: 0.625rem 0;
 }
 
-.zusatz a {
-  font-weight: 700;
-}
-
 .quelle {
   margin: 0.75rem 0 0;
   font-size: 0.875rem;
@@ -469,9 +434,9 @@ button {
   font: inherit;
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--auf-knopf);
-  background: var(--knopf);
-  border: 2px solid var(--knopf);
+  color: var(--feld);
+  background: var(--weiss);
+  border: 2px solid var(--weiss);
   border-radius: 999px;
   cursor: pointer;
   touch-action: manipulation;
@@ -490,8 +455,9 @@ button:active {
 
 button.zweitrangig {
   margin-top: 0.5rem;
-  color: var(--knopf);
+  color: var(--weiss);
   background: transparent;
+  border-color: var(--weiss-spur);
 }
 
 .knoepfe {
@@ -511,57 +477,20 @@ button.zweitrangig {
   flex: 1 1 5rem;
 }
 
-.start button,
-.pruefpunkt button {
-  color: var(--feld, var(--violett));
-  background: var(--weiss);
-  border-color: var(--weiss);
-}
-
-.pruefpunkt button.zweitrangig {
-  color: var(--weiss);
-  background: transparent;
-  border-color: var(--weiss-spur);
-}
-
-@media (prefers-color-scheme: dark) {
-  button.zweitrangig {
-    color: var(--text);
-  }
-}
-
 @media (hover: hover) and (pointer: fine) {
   .antwort:hover:not(:has(input:checked)) {
     background: var(--weiss-flaeche-hover);
   }
 
   button:hover {
-    background: color-mix(in srgb, var(--knopf) 86%, var(--text));
-    border-color: color-mix(in srgb, var(--knopf) 86%, var(--text));
+    background: color-mix(in srgb, var(--weiss) 86%, var(--feld));
+    border-color: color-mix(in srgb, var(--weiss) 86%, var(--feld));
   }
 
   button.zweitrangig:hover {
-    background: color-mix(in srgb, var(--knopf) 12%, transparent);
-    border-color: var(--knopf);
-  }
-
-  .start button:hover,
-  .pruefpunkt button:hover {
-    background: color-mix(in srgb, var(--weiss) 86%, var(--feld, var(--violett)));
-    border-color: color-mix(in srgb, var(--weiss) 86%, var(--feld, var(--violett)));
-  }
-
-  .pruefpunkt button.zweitrangig:hover {
     background: var(--weiss-flaeche);
     border-color: var(--weiss);
   }
-}
-
-.ergebnis-karte {
-  padding: 1rem 1.25rem 1.25rem;
-  background: var(--tinte);
-  border-radius: var(--karte-rund);
-  box-shadow: var(--karte-schatten);
 }
 
 .ergebnis h2 {
@@ -602,10 +531,9 @@ button.zweitrangig {
   display: flex;
   align-items: baseline;
   gap: 0.75rem;
-  margin: 0 0.75rem;
   padding: 0.75rem 0;
-  border-bottom: 1px solid var(--rand);
-  color: var(--text-leise);
+  border-bottom: 1px solid var(--weiss-spur);
+  color: var(--weiss-leise);
 }
 
 .nicht-pruefbar-titel li::before {
@@ -614,7 +542,7 @@ button.zweitrangig {
   width: 1.25rem;
   height: 0.3125rem;
   border-radius: 999px;
-  background: repeating-linear-gradient(-45deg, var(--text) 0 2px, transparent 2px 4px);
+  background: repeating-linear-gradient(-45deg, var(--weiss) 0 2px, transparent 2px 4px);
   transform: translateY(-0.2em);
 }
 
@@ -626,7 +554,7 @@ button.zweitrangig {
   margin: 2rem 0 0;
   padding: 1rem 1.125rem;
   font-weight: 700;
-  border: 2px solid var(--rand-stark);
+  border: 2px solid var(--weiss-spur);
   border-radius: var(--rund);
 }
 
@@ -646,11 +574,11 @@ button.zweitrangig {
 }
 
 #fuss {
-  margin: 3rem 0.75rem 0;
+  margin-top: 3rem;
   padding-top: 1.25rem;
-  border-top: 1px solid var(--rand);
+  border-top: 1px solid var(--weiss-spur);
   font-size: 0.875rem;
-  color: var(--text-leise);
+  color: var(--weiss-leise);
 }
 
 #fuss p {
@@ -688,6 +616,125 @@ button.zweitrangig {
 .tacho text {
   fill: currentColor;
   font-size: 10px;
+}
+
+@media (min-width: 56rem) {
+  :root {
+    --rand-oben: 2rem;
+    --rand-seite: max(3rem, calc((100vw - 72rem) / 2));
+    --kopfzeile: 4rem;
+    --titelgroesse: clamp(3.75rem, 7vw, 6rem);
+  }
+
+  body:has(.start) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: minmax(calc(100svh - var(--rand-oben) - 2rem), auto) auto;
+    column-gap: 5rem;
+  }
+
+  body:has(.start) h1 {
+    padding: 0;
+  }
+
+  body:has(.start) > :is(header, main) {
+    align-self: center;
+  }
+
+  body:has(.start) #fuss {
+    grid-column: 1 / -1;
+  }
+
+  .start {
+    min-height: 0;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .start button {
+    margin-top: 0;
+  }
+
+  .pruefpunkt {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 0.5fr);
+    align-content: start;
+    column-gap: 5rem;
+  }
+
+  .pruefpunkt > :is(.segmente, .teil, fieldset) {
+    grid-column: 1 / -1;
+  }
+
+  .pruefpunkt h2 {
+    grid-column: 1;
+    align-self: end;
+    margin: 3rem 0 1.5rem;
+  }
+
+  .pruefpunkt h2 .nummer {
+    font-size: 6rem;
+  }
+
+  .pruefpunkt > :is(.tipp-bereich, .zusatz, .quelle, .fehler-bereich, .knoepfe) {
+    grid-column: 2;
+  }
+
+  fieldset {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-content: start;
+    column-gap: 5rem;
+  }
+
+  legend {
+    float: left;
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    margin: 0;
+    font-size: 2.25rem;
+    line-height: 1.12;
+  }
+
+  .antwort {
+    grid-column: 2;
+  }
+
+  .antwort:first-of-type {
+    margin-top: 0;
+  }
+
+  .ergebnis {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    column-gap: 5rem;
+  }
+
+  .ergebnis-karte {
+    grid-column: 1;
+    grid-row: 1 / span 12;
+    position: sticky;
+    top: 2rem;
+  }
+
+  .ergebnis > :not(.ergebnis-karte) {
+    grid-column: 2;
+  }
+
+  .ergebnis h2 {
+    margin-top: 3rem;
+    font-size: 2.5rem;
+  }
+
+  .ergebnis > section:nth-child(2) h3 {
+    margin-top: 0;
+  }
+
+  .tacho {
+    margin: 2rem 0 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

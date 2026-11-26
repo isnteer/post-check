@@ -150,14 +150,15 @@ test('die Content-Security-Policy erlaubt keine fremden Ursprünge', async ({ pa
 });
 
 for (const modus of ['light', 'dark']) {
-  test(`Darstellung folgt dem Systemmodus ${modus}`, async ({ page }) => {
+  test(`im Modus ${modus} füllt die Farbe der Ansicht die ganze Seite`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: modus });
+    const hintergrund = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
     await page.goto('/');
-    const hintergrund = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
-    const [r, g, b] = hintergrund.match(/\d+/g).map(Number);
-    const helligkeit = (r + g + b) / 3;
-    if (modus === 'dark') expect(helligkeit).toBeLessThan(60);
-    else expect(helligkeit).toBeGreaterThan(200);
+    expect(await hintergrund()).toBe('rgb(58, 31, 209)');
+    await zumPruefpunkt(page, 8);
+    expect(await hintergrund()).toBe('rgb(176, 19, 106)');
+    const hoehe = await page.evaluate(() => [document.body.getBoundingClientRect().height, innerHeight]);
+    expect(hoehe[0]).toBeGreaterThanOrEqual(hoehe[1]);
   });
 
   for (const [name, oeffne] of Object.entries(ansichten)) {
